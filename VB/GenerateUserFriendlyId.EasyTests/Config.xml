@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" TestRunTimeLimit="3" >
+	<Applications>
+		<!-- Win -->
+		<Application
+			Name="DemoWin"
+			FileName="[ConfigPath]\..\Demo.Win\Bin\EasyTest\Demo.Win.exe"
+			AdapterAssemblyName="DevExpress.ExpressApp.EasyTest.WinAdapter.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+			CommunicationPort="4100"/>
+		<!-- Web -->
+		<Application
+			Name="DemoWeb"
+			Url="http://localhost:4030"
+			PhysicalPath="[ConfigPath]\..\Demo.Web"
+			AdapterAssemblyName="DevExpress.ExpressApp.EasyTest.WebAdapter.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"/>
+	</Applications>
+	<TestDatabases>
+		<Database xsi:type="TestMSSQLDatabase" Server="(local)" Name="Demo_E2829" DBName="Demo_E2829" />
+	</TestDatabases>
+</Options>

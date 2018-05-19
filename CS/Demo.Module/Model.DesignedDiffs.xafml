@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="GenerateUserFriendlyId" Logo="ExpressAppLogo">
+  <NavigationItems StartupNavigationItem="Contact_ListView" />
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="10.2.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <ListView Id="Address_ListView">
+      <Columns>
+        <ColumnInfo Id="AddressId" SortOrder="Ascending" SortIndex="1" />
+      </Columns>
+    </ListView>
+    <ListView Id="Contact_ListView">
+      <Columns>
+        <ColumnInfo Id="ContactId" SortOrder="Ascending" SortIndex="1" />
+      </Columns>
+    </ListView>
+    <ListView Id="IDocument_ListView">
+      <Columns>
+        <ColumnInfo Id="DocumentId" SortIndex="1" SortOrder="Ascending" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>
