@@ -5,14 +5,14 @@
 		<Application
 			Name="DemoWin"
 			FileName="[ConfigPath]\..\Demo.Win\Bin\EasyTest\Demo.Win.exe"
-			AdapterAssemblyName="DevExpress.ExpressApp.EasyTest.WinAdapter.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+			AdapterAssemblyName="DevExpress.ExpressApp.EasyTest.WinAdapter.v17.2, Version=17.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
 			CommunicationPort="4100"/>
 		<!-- Web -->
 		<Application
 			Name="DemoWeb"
 			Url="http://localhost:4030"
 			PhysicalPath="[ConfigPath]\..\Demo.Web"
-			AdapterAssemblyName="DevExpress.ExpressApp.EasyTest.WebAdapter.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"/>
+			AdapterAssemblyName="DevExpress.ExpressApp.EasyTest.WebAdapter.v17.2, Version=17.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"/>
 	</Applications>
 	<TestDatabases>
 		<Database xsi:type="TestMSSQLDatabase" Server="(local)" Name="Demo_E2829" DBName="Demo_E2829" />
