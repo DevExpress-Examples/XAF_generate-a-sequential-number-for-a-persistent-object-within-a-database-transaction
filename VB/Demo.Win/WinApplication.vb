@@ -19,7 +19,7 @@ Namespace GenerateUserFriendlyId.Win
             Dim provider As New XPObjectSpaceProvider(args.ConnectionString, args.Connection, True)
             args.ObjectSpaceProvider = provider
         End Sub
-        Private Sub GenerateUserFriendlyIdWindowsFormsApplication_DatabaseVersionMismatch(ByVal sender As Object, ByVal e As DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs) Handles MyBase.DatabaseVersionMismatch
+        Private Sub GenerateUserFriendlyIdWindowsFormsApplication_DatabaseVersionMismatch(ByVal sender As Object, ByVal e As DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs) Handles Me.DatabaseVersionMismatch
 #If EASYTEST Then
             e.Updater.Update()
             e.Handled = True
@@ -32,7 +32,7 @@ Namespace GenerateUserFriendlyId.Win
             End If
 #End If
         End Sub
-        Private Sub GenerateUserFriendlyIdWindowsFormsApplication_CustomizeLanguagesList(ByVal sender As Object, ByVal e As CustomizeLanguagesListEventArgs) Handles MyBase.CustomizeLanguagesList
+        Private Sub GenerateUserFriendlyIdWindowsFormsApplication_CustomizeLanguagesList(ByVal sender As Object, ByVal e As CustomizeLanguagesListEventArgs) Handles Me.CustomizeLanguagesList
             Dim userLanguageName As String = System.Threading.Thread.CurrentThread.CurrentUICulture.Name
             If userLanguageName <> "en-US" AndAlso e.Languages.IndexOf(userLanguageName) = -1 Then
                 e.Languages.Add(userLanguageName)

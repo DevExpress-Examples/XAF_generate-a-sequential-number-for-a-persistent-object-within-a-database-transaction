@@ -32,18 +32,18 @@ Namespace Demo.Module.DatabaseUpdate
                 If currentContactMaleName >= maleNames.Length Then
                     currentContactMaleName = 0
                 End If
-                Dim tempVar As Integer = currentContactMaleName
+                Dim tempVar = maleNames(currentContactMaleName)
                 currentContactMaleName += 1
-                Return maleNames(tempVar)
+                Return tempVar
             End If
             sex = Demo.Module.BusinessObjects.Sex.Female
             currentContactSex = Demo.Module.BusinessObjects.Sex.Male
             If currentContactFemaleName >= femaleNames.Length Then
                 currentContactFemaleName = 0
             End If
-            Dim tempVar2 As Integer = currentContactFemaleName
+            Dim tempVar2 = femaleNames(currentContactFemaleName)
             currentContactFemaleName += 1
-            Return femaleNames(tempVar2)
+            Return tempVar2
         End Function
         Public Shared Function CreateContact(ByVal objectSpace As IObjectSpace) As Contact
             Dim Contact As Contact = objectSpace.CreateObject(Of Contact)()
@@ -75,9 +75,9 @@ Namespace Demo.Module.DatabaseUpdate
             If currentContactLastName >= lastNames.Length Then
                 currentContactLastName = 0
             End If
-            Dim tempVar As Integer = currentContactLastName
+            Dim tempVar = lastNames(currentContactLastName)
             currentContactLastName += 1
-            Return lastNames(tempVar)
+            Return tempVar
         End Function
         Private Shared Function GetNextCity(ByRef province As String) As String
             If currentAddressCity >= cityList.Length Then

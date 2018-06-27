@@ -93,7 +93,7 @@
             </tr>
         </table>
         <script type="text/javascript">
-    <!--
+	<!--
             function ShowDetails() {
                 document.getElementById('DetailsContent').style.display = 'block';
                 document.getElementById('ShowErrorDetails').style.display = 'none';

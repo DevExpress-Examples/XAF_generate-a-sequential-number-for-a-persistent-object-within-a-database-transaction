@@ -19,9 +19,9 @@ Namespace GenerateUserFriendlyId.Module.BusinessObjects
         Public Sub New(ByVal session As Session)
             MyBase.New(session)
         End Sub
+        'Dennis: Comment out this code if you do not want to have the SequentialNumber column created in each derived class table.
         <Browsable(False), Indexed(Unique := False)> _
         Public Property SequentialNumber() As Long Implements ISupportSequentialNumber.SequentialNumber
-        'Dennis: Comment out this code if you do not want to have the SequentialNumber column created in each derived class table.
             Get
                 Return _SequentialNumber
             End Get
@@ -35,7 +35,7 @@ Namespace GenerateUserFriendlyId.Module.BusinessObjects
         Protected Overrides Sub OnSaving()
             Try
                 MyBase.OnSaving()
-                If Not(TypeOf Session Is NestedUnitOfWork) AndAlso (Session.DataLayer IsNot Nothing) AndAlso (TypeOf Session.ObjectLayer Is SimpleObjectLayer) AndAlso Session.IsNewObject(Me) Then
+                If Not (TypeOf Session Is NestedUnitOfWork) AndAlso (Session.DataLayer IsNot Nothing) AndAlso (TypeOf Session.ObjectLayer Is SimpleObjectLayer) AndAlso Session.IsNewObject(Me) Then
                         'OR
                         '&& !(Session.ObjectLayer is DevExpress.ExpressApp.Security.ClientServer.SecuredSessionObjectLayer)
                     GenerateSequence()
@@ -88,14 +88,14 @@ Namespace GenerateUserFriendlyId.Module.BusinessObjects
             CancelSequence()
         End Sub
         Private Sub SubscribeToEvents()
-            If Not(TypeOf Session Is NestedUnitOfWork) Then
+            If Not (TypeOf Session Is NestedUnitOfWork) Then
                 AddHandler Session.AfterCommitTransaction, AddressOf Session_AfterCommitTransaction
                 AddHandler Session.AfterRollbackTransaction, AddressOf Session_AfterRollBack
                 AddHandler Session.FailedCommitTransaction, AddressOf Session_FailedCommitTransaction
             End If
         End Sub
         Private Sub UnSubscribeFromEvents()
-            If Not(TypeOf Session Is NestedUnitOfWork) Then
+            If Not (TypeOf Session Is NestedUnitOfWork) Then
                 RemoveHandler Session.AfterCommitTransaction, AddressOf Session_AfterCommitTransaction
                 RemoveHandler Session.AfterRollbackTransaction, AddressOf Session_AfterRollBack
                 RemoveHandler Session.FailedCommitTransaction, AddressOf Session_FailedCommitTransaction

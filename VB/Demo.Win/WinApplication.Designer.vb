@@ -28,7 +28,7 @@
             Me.module3 = New GenerateUserFriendlyId.Module.GenerateUserFriendlyIdModule()
             Me.businessClassLibraryCustomizationModule1 = New DevExpress.ExpressApp.Objects.BusinessClassLibraryCustomizationModule()
             Me.demoModule1 = New Demo.Module.DemoModule()
-            DirectCast(Me, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
             ' 
             ' GenerateUserFriendlyIdWindowsFormsApplication
             ' 
@@ -38,7 +38,7 @@
             Me.Modules.Add(Me.businessClassLibraryCustomizationModule1)
             Me.Modules.Add(Me.module3)
             Me.Modules.Add(Me.demoModule1)
-            DirectCast(Me, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
 
         End Sub
 

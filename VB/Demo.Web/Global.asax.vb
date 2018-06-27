@@ -40,7 +40,7 @@ Namespace GenerateUserFriendlyId.Web
         End Sub
         Protected Sub Application_BeginRequest(ByVal sender As Object, ByVal e As EventArgs)
             Dim filePath As String = HttpContext.Current.Request.PhysicalPath
-            If (Not String.IsNullOrEmpty(filePath)) AndAlso (filePath.IndexOf("Images") >= 0) AndAlso (Not System.IO.File.Exists(filePath)) Then
+            If Not String.IsNullOrEmpty(filePath) AndAlso (filePath.IndexOf("Images") >= 0) AndAlso Not System.IO.File.Exists(filePath) Then
                 HttpContext.Current.Response.End()
             End If
         End Sub

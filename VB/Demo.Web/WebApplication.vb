@@ -24,7 +24,7 @@ Namespace GenerateUserFriendlyId.Web
             GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(Me, args.ConnectionString)
             args.ObjectSpaceProvider = provider
         End Sub
-        Private Sub GenerateUserFriendlyIdAspNetApplication_DatabaseVersionMismatch(ByVal sender As Object, ByVal e As DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs) Handles MyBase.DatabaseVersionMismatch
+        Private Sub GenerateUserFriendlyIdAspNetApplication_DatabaseVersionMismatch(ByVal sender As Object, ByVal e As DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs) Handles Me.DatabaseVersionMismatch
 #If EASYTEST Then
             e.Updater.Update()
             e.Handled = True

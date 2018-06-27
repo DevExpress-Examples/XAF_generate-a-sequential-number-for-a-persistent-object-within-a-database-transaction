@@ -188,9 +188,9 @@ Namespace GenerateUserFriendlyId.Module
         Public Sub New(ByVal session As Session)
             MyBase.New(session)
         End Sub
+        'Dennis: The size should be enough to store a full type name. However, you cannot use unlimited size for key columns.
         <Key, Size(1024)> _
         Public Property TypeName() As String
-        'Dennis: The size should be enough to store a full type name. However, you cannot use unlimited size for key columns.
             Get
                 Return typeName_Renamed
             End Get
