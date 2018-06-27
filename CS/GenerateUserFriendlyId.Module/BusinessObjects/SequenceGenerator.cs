@@ -155,9 +155,7 @@ namespace GenerateUserFriendlyId.Module {
                 DefaultDataLayerConnectionString = defaultDataLayerConnectionString;
             }
             Guard.ArgumentNotNull(targetApplication, "targetApplication");
-            if(TargetApplication == null) {
-                TargetApplication = targetApplication;
-            }
+            TargetApplication = targetApplication;
         }
         protected static string DefaultDataLayerConnectionString { get; private set; }
         protected static XafApplication TargetApplication { get; private set; }

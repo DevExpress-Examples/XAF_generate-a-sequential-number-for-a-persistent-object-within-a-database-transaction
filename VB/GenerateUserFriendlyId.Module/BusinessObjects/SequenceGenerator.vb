@@ -156,9 +156,7 @@ Namespace GenerateUserFriendlyId.Module
                 SequenceGenerator.DefaultDataLayerConnectionString = defaultDataLayerConnectionString
             End If
             Guard.ArgumentNotNull(targetApplication, "targetApplication")
-            If SequenceGenerator.TargetApplication Is Nothing Then
-                SequenceGenerator.TargetApplication = targetApplication
-            End If
+            SequenceGenerator.TargetApplication = targetApplication
         End Sub
         Private Shared privateDefaultDataLayerConnectionString As String
         Protected Shared Property DefaultDataLayerConnectionString() As String
