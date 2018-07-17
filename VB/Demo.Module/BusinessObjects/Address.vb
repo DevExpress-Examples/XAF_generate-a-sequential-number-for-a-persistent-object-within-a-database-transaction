@@ -22,7 +22,7 @@ Namespace Demo.Module.BusinessObjects
         Private address1_Renamed As String
 
         Private address2_Renamed As String
-        <PersistentAlias("concat('A', ToStr(SequentialNumber))")> _
+        <PersistentAlias("Concat('A',PadLeft(ToStr(SequentialNumber),6,'0'))")> _
         Public ReadOnly Property AddressId() As String
             Get
                 Return Convert.ToString(EvaluateAlias("AddressId"))
@@ -91,5 +91,8 @@ Namespace Demo.Module.BusinessObjects
         Public Sub New(ByVal session As Session)
             MyBase.New(session)
         End Sub
+        Protected Overrides Function GetSequenceName() As String
+            Return String.Concat(ClassInfo.FullName, "-", Province.Replace(" ", "_"))
+        End Function
     End Class
 End Namespace

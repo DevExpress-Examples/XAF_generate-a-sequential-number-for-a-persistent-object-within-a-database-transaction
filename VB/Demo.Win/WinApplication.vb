@@ -16,7 +16,7 @@ Namespace GenerateUserFriendlyId.Win
         End Sub
         Protected Overrides Sub CreateDefaultObjectSpaceProvider(ByVal args As CreateCustomObjectSpaceProviderEventArgs)
             Dim dataStoreProvider As IXpoDataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(args.ConnectionString, args.Connection, True)
-            args.ObjectSpaceProvider = New XPObjectSpaceProvider(dataStoreProvider, False)
+            args.ObjectSpaceProvider = New XPObjectSpaceProvider(dataStoreProvider, True) ' TestListViewController requires a thread-safe DAL
             args.ObjectSpaceProviders.Add(New NonPersistentObjectSpaceProvider(TypesInfo, Nothing))
             GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider)
         End Sub

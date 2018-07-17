@@ -8,7 +8,7 @@ Namespace Demo.Module.BusinessObjects
     Public Interface IDocument
         Inherits IUserFriendlyIdDomainComponent
 
-        <Calculated("concat('D', ToStr(SequentialNumber))")> _
+        <Calculated("Concat('D',PadLeft(ToStr(SequentialNumber),6,'0'))")> _
         ReadOnly Property DocumentId() As String
         <RuleRequiredField("IDocument.Title.RuleRequiredField", DefaultContexts.Save), FieldSize(255)> _
         Property Title() As String

@@ -45,6 +45,10 @@ Namespace GenerateUserFriendlyId.Module.BusinessObjects
                 Throw
             End Try
         End Sub
+        ' Override this method to create multiple sequences based on the current object's property values
+        Protected Overridable Function GetSequenceName() As String
+            Return GenerateUserFriendlyId.Module.SequenceGenerator.GetBaseSequenceName(ClassInfo)
+        End Function
         Public Sub GenerateSequence()
             SyncLock syncRoot
                 Dim typeToExistsMap As New Dictionary(Of String, Boolean)()
@@ -55,7 +59,7 @@ Namespace GenerateUserFriendlyId.Module.BusinessObjects
                     sequenceGenerator = New SequenceGenerator(typeToExistsMap)
                 End If
                 SubscribeToEvents()
-                OnSequenceGenerated(sequenceGenerator.GetNextSequence(ClassInfo))
+                OnSequenceGenerated(sequenceGenerator.GetNextSequence(GetSequenceName()))
             End SyncLock
         End Sub
         Private Sub AcceptSequence()

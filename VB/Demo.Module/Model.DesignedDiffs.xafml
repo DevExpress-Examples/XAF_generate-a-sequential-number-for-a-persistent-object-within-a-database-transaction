@@ -2,22 +2,26 @@
 <Application Title="GenerateUserFriendlyId" Logo="ExpressAppLogo">
   <NavigationItems StartupNavigationItem="Contact_ListView" />
   <SchemaModules>
-    <SchemaModule Name="SystemModule" Version="10.2.4.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="17.2.8.0" IsNewNode="True" />
   </SchemaModules>
   <Views>
-    <ListView Id="Address_ListView">
+    <ListView Id="Address_ListView" IsGroupPanelVisible="True">
       <Columns>
-        <ColumnInfo Id="AddressId" SortOrder="Ascending" SortIndex="1" />
+        <ColumnInfo Id="FullAddress" SortIndex="-1" SortOrder="None" />
+        <ColumnInfo Id="AddressId" SortOrder="Ascending" SortIndex="0" />
+        <ColumnInfo Id="Province" SortOrder="Ascending" GroupIndex="0" />
       </Columns>
     </ListView>
     <ListView Id="Contact_ListView">
       <Columns>
-        <ColumnInfo Id="ContactId" SortOrder="Ascending" SortIndex="1" />
+        <ColumnInfo Id="FullName" SortIndex="-1" SortOrder="None" />
+        <ColumnInfo Id="ContactId" SortOrder="Ascending" SortIndex="0" />
       </Columns>
     </ListView>
     <ListView Id="IDocument_ListView">
       <Columns>
-        <ColumnInfo Id="DocumentId" SortIndex="1" SortOrder="Ascending" />
+        <ColumnInfo Id="Title" SortIndex="-1" SortOrder="None" />
+        <ColumnInfo Id="DocumentId" SortIndex="0" SortOrder="Ascending" />
       </Columns>
     </ListView>
   </Views>
