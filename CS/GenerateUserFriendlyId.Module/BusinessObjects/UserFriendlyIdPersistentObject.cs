@@ -42,6 +42,10 @@ namespace GenerateUserFriendlyId.Module.BusinessObjects {
                 throw;
             }
         }
+        // Override this method to create multiple sequences based on the current object's property values
+        protected virtual string GetSequenceName() {
+            return SequenceGenerator.GetBaseSequenceName(ClassInfo);
+        }
         public void GenerateSequence() {
             lock(syncRoot) {
                 Dictionary<string, bool> typeToExistsMap = new Dictionary<string, bool>();
@@ -52,7 +56,7 @@ namespace GenerateUserFriendlyId.Module.BusinessObjects {
                     sequenceGenerator = new SequenceGenerator(typeToExistsMap);
                 }
                 SubscribeToEvents();
-                OnSequenceGenerated(sequenceGenerator.GetNextSequence(ClassInfo));
+                OnSequenceGenerated(sequenceGenerator.GetNextSequence(GetSequenceName()));
             }
         }
         private void AcceptSequence() {

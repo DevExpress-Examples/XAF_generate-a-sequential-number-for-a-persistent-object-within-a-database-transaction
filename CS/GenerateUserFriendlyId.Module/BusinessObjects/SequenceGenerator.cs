@@ -67,20 +67,33 @@ namespace GenerateUserFriendlyId.Module {
             return GetNextSequence(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary.GetClassInfo(typeInfo.Type));
         }
         public long GetNextSequence(XPClassInfo classInfo) {
-            Guard.ArgumentNotNull(classInfo, "classInfo");
-            XPClassInfo ci = classInfo;
-            //Dennis: Uncomment this code if you want to have the SequentialNumber column created in each derived class table.
-            while(ci.BaseClass != null && ci.BaseClass.IsPersistent) {
-                ci = ci.BaseClass;
-            }
-            seq = euow.GetObjectByKey<Sequence>(ci.FullName, true);
+            return GetNextSequence(GetBaseSequenceName(classInfo));
+        }
+        public long GetNextSequence(string name) {
+            seq = euow.GetObjectByKey<Sequence>(name, true);
             if(seq == null) {
-                throw new InvalidOperationException(string.Format("Sequence for the {0} type was not found.", ci.FullName));
+                //throw new InvalidOperationException(string.Format("Sequence for the {0} type was not found.", name));
+                seq = CreateSequece(euow, name);
             }
             long nextSequence = seq.NextSequence;
             seq.NextSequence++;
             euow.FlushChanges();
             return nextSequence;
+        }
+        public static string GetBaseSequenceName(XPClassInfo classInfo) {
+            Guard.ArgumentNotNull(classInfo, "classInfo");
+            XPClassInfo ci = classInfo;
+            //Comment this code if you want to have the SequentialNumber column created in each derived class table.
+            while(ci.BaseClass != null && ci.BaseClass.IsPersistent) {
+                ci = ci.BaseClass;
+            }
+            return ci.FullName;
+        }
+        private static Sequence CreateSequece(UnitOfWork uow, string typeName) {
+            Sequence seq = new Sequence(uow);
+            seq.TypeName = typeName;
+            seq.NextSequence = 1;
+            return seq;
         }
         //Dennis: It is necessary to generate (only once) sequences for all the persistent types before using the GetNextSequence method.
         public static void RegisterSequences(IEnumerable<ITypeInfo> persistentTypes) {
@@ -96,7 +109,7 @@ namespace GenerateUserFriendlyId.Module {
                         if(typeToExistsMap.ContainsKey(ti.FullName)) {
                             continue;
                         }
-                        //Dennis: Uncomment this code if you want to have the SequentialNumber column created in each derived class table.
+                        //Comment this code if you want to have the SequentialNumber column created in each derived class table.
                         while(ti.Base != null && ti.Base.IsPersistent) {
                             ti = ti.Base;
                         }
@@ -113,9 +126,7 @@ namespace GenerateUserFriendlyId.Module {
                         }
                         if(ti.IsPersistent) {
                             typeToExistsMap[typeName] = true;
-                            Sequence seq = new Sequence(uow);
-                            seq.TypeName = typeName;
-                            seq.NextSequence = 0;
+                            CreateSequece(uow, typeName);
                         }
                     }
                     uow.CommitChanges();
