@@ -14,7 +14,7 @@ namespace GenerateUserFriendlyId.Win {
         }
         protected override void CreateDefaultObjectSpaceProvider(CreateCustomObjectSpaceProviderEventArgs args) {
             IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(args.ConnectionString, args.Connection, true);
-            args.ObjectSpaceProvider = new XPObjectSpaceProvider(dataStoreProvider, false);
+            args.ObjectSpaceProvider = new XPObjectSpaceProvider(dataStoreProvider, true);// TestListViewController requires a thread-safe DAL
             args.ObjectSpaceProviders.Add(new NonPersistentObjectSpaceProvider(TypesInfo, null));
             GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
         }
