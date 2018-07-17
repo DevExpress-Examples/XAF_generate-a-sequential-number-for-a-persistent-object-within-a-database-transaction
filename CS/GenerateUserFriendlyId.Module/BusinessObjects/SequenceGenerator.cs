@@ -127,7 +127,7 @@ namespace GenerateUserFriendlyId.Module {
                 lock (syncRoot) {
                     if (defaultDataLayer == null) {
                         IDisposable[] disposableObjects;
-                        defaultDataLayer = new SimpleDataLayer(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary, DataStoreProvider.CreateWorkingStore(out disposableObjects));
+                        defaultDataLayer = new SimpleDataLayer(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary, DataStoreProvider.CreateUpdatingStore(false, out disposableObjects));
                     }
                     return defaultDataLayer;
                 }
