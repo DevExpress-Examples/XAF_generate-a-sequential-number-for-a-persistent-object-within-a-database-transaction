@@ -11,7 +11,7 @@ namespace Demo.Module.BusinessObjects {
     [DefaultProperty("FullName")]
     [ImageName("BO_Person")]
     public class Contact : UserFriendlyIdPersistentObject {
-        [PersistentAlias("concat('C', ToStr(SequentialNumber))")]
+        [PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")]
         public string ContactId {
             get {
                 return Convert.ToString(EvaluateAlias("ContactId"));

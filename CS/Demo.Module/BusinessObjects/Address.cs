@@ -16,7 +16,7 @@ namespace Demo.Module.BusinessObjects {
         string city;
         string address1;
         string address2;
-        [PersistentAlias("concat('A', ToStr(SequentialNumber))")]
+        [PersistentAlias("Concat('A',PadLeft(ToStr(SequentialNumber),6,'0'))")]
         public string AddressId {
             get {
                 return Convert.ToString(EvaluateAlias("AddressId"));

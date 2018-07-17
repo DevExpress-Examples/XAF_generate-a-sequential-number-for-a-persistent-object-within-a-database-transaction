@@ -9,7 +9,7 @@ namespace Demo.Module.BusinessObjects {
     [XafDefaultProperty("Title")]
     [ImageName("BO_Note")]
     public interface IDocument : IUserFriendlyIdDomainComponent {
-        [Calculated("concat('D', ToStr(SequentialNumber))")]
+        [Calculated("Concat('D',PadLeft(ToStr(SequentialNumber),6,'0'))")]
         string DocumentId { get; }
         [RuleRequiredField("IDocument.Title.RuleRequiredField", DefaultContexts.Save)]
         [FieldSize(255)]
