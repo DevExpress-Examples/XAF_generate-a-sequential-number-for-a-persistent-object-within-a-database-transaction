@@ -13,56 +13,34 @@ namespace Demo.Module.BusinessObjects {
     public class Contact : UserFriendlyIdPersistentObject {
         [PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")]
         public string ContactId {
-            get {
-                return Convert.ToString(EvaluateAlias("ContactId"));
-            }
+            get { return Convert.ToString(EvaluateAlias("ContactId")); }
         }
-  
+
         string firstName;
         string lastName;
         Sex sex;
         int age;
         Address address;
         public string FirstName {
-            get {
-                return firstName;
-            }
-            set {
-                SetPropertyValue("FirstName", ref firstName, value);
-            }
+            get { return firstName; }
+            set { SetPropertyValue("FirstName", ref firstName, value); }
         }
         public string LastName {
-            get {
-                return lastName;
-            }
-            set {
-                SetPropertyValue("LastName", ref lastName, value);
-            }
+            get { return lastName; }
+            set { SetPropertyValue("LastName", ref lastName, value); }
         }
         public int Age {
-            get {
-                return age;
-            }
-            set {
-                SetPropertyValue("Age", ref age, value);
-            }
+            get { return age; }
+            set { SetPropertyValue("Age", ref age, value); }
         }
         public Sex Sex {
-            get {
-                return sex;
-            }
-            set {
-                SetPropertyValue("Sex", ref sex, value);
-            }
+            get { return sex; }
+            set { SetPropertyValue("Sex", ref sex, value); }
         }
         [Association]
         public Address Address {
-            get {
-                return address;
-            }
-            set {
-                SetPropertyValue("Address", ref address, value);
-            }
+            get { return address; }
+            set { SetPropertyValue("Address", ref address, value); }
         }
         [PersistentAlias("concat(FirstName, LastName)")]
         public string FullName {
