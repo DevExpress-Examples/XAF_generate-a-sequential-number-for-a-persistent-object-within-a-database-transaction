@@ -1,10 +1,7 @@
 ﻿Imports System
-Imports System.Security.Principal
-
+Imports Demo.Module.BusinessObjects
 Imports DevExpress.ExpressApp
 Imports DevExpress.ExpressApp.Updating
-Imports DevExpress.Xpo
-Imports DevExpress.Data.Filtering
 
 Namespace Demo.Module.DatabaseUpdate
     Public Class Updater
@@ -15,12 +12,14 @@ Namespace Demo.Module.DatabaseUpdate
         End Sub
         Public Overrides Sub UpdateDatabaseAfterUpdateSchema()
             MyBase.UpdateDatabaseAfterUpdateSchema()
-            For i As Integer = 0 To 4
-                DatabaseHelper.CreateContact(ObjectSpace)
-                DatabaseHelper.CreateAddress(ObjectSpace)
-                DatabaseHelper.CreateDocument(ObjectSpace)
-                Me.UpdateStatus("Creating test data", "", String.Format("Batch #{0} was created", i))
-            Next i
+            If ObjectSpace.GetObjectsCount(GetType(Contact), Nothing) = 0 Then
+                For i As Integer = 0 To 9
+                    DatabaseHelper.CreateContact(ObjectSpace)
+                    DatabaseHelper.CreateAddress(ObjectSpace)
+                    DatabaseHelper.CreateDocument(ObjectSpace)
+                    Me.UpdateStatus("Creating test data", "", String.Format("Batch #{0} was created", i))
+                Next i
+            End If
             ObjectSpace.CommitChanges()
         End Sub
     End Class

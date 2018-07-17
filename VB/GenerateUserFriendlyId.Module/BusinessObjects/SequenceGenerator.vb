@@ -72,20 +72,33 @@ Namespace GenerateUserFriendlyId.Module
             Return GetNextSequence(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary.GetClassInfo(typeInfo.Type))
         End Function
         Public Function GetNextSequence(ByVal classInfo As XPClassInfo) As Long
-            Guard.ArgumentNotNull(classInfo, "classInfo")
-            Dim ci As XPClassInfo = classInfo
-            'Dennis: Uncomment this code if you want to have the SequentialNumber column created in each derived class table.
-            Do While ci.BaseClass IsNot Nothing AndAlso ci.BaseClass.IsPersistent
-                ci = ci.BaseClass
-            Loop
-            seq = euow.GetObjectByKey(Of Sequence)(ci.FullName, True)
+            Return GetNextSequence(GetBaseSequenceName(classInfo))
+        End Function
+        Public Function GetNextSequence(ByVal name As String) As Long
+            seq = euow.GetObjectByKey(Of Sequence)(name, True)
             If seq Is Nothing Then
-                Throw New InvalidOperationException(String.Format("Sequence for the {0} type was not found.", ci.FullName))
+                'throw new InvalidOperationException(string.Format("Sequence for the {0} type was not found.", name));
+                seq = CreateSequece(euow, name)
             End If
             Dim nextSequence As Long = seq.NextSequence
             seq.NextSequence += 1
             euow.FlushChanges()
             Return nextSequence
+        End Function
+        Public Shared Function GetBaseSequenceName(ByVal classInfo As XPClassInfo) As String
+            Guard.ArgumentNotNull(classInfo, "classInfo")
+            Dim ci As XPClassInfo = classInfo
+            'Comment this code if you want to have the SequentialNumber column created in each derived class table.
+            Do While ci.BaseClass IsNot Nothing AndAlso ci.BaseClass.IsPersistent
+                ci = ci.BaseClass
+            Loop
+            Return ci.FullName
+        End Function
+        Private Shared Function CreateSequece(ByVal uow As UnitOfWork, ByVal typeName As String) As Sequence
+            Dim seq As New Sequence(uow)
+            seq.TypeName = typeName
+            seq.NextSequence = 1
+            Return seq
         End Function
         'Dennis: It is necessary to generate (only once) sequences for all the persistent types before using the GetNextSequence method.
         Public Shared Sub RegisterSequences(ByVal persistentTypes As IEnumerable(Of ITypeInfo))
@@ -101,7 +114,7 @@ Namespace GenerateUserFriendlyId.Module
                         If typeToExistsMap.ContainsKey(ti.FullName) Then
                             Continue For
                         End If
-                        'Dennis: Uncomment this code if you want to have the SequentialNumber column created in each derived class table.
+                        'Comment this code if you want to have the SequentialNumber column created in each derived class table.
                         Do While ti.Base IsNot Nothing AndAlso ti.Base.IsPersistent
                             ti = ti.Base
                         Loop
@@ -118,9 +131,7 @@ Namespace GenerateUserFriendlyId.Module
                         End If
                         If ti.IsPersistent Then
                             typeToExistsMap(typeName) = True
-                            Dim seq As New Sequence(uow)
-                            seq.TypeName = typeName
-                            seq.NextSequence = 0
+                            CreateSequece(uow, typeName)
                         End If
                     Next typeInfo
                     uow.CommitChanges()
@@ -133,7 +144,7 @@ Namespace GenerateUserFriendlyId.Module
                 SyncLock syncRoot
                     If defaultDataLayer_Renamed Is Nothing Then
                         Dim disposableObjects() As IDisposable = Nothing
-                        defaultDataLayer_Renamed = New SimpleDataLayer(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary, DataStoreProvider.CreateWorkingStore(disposableObjects))
+                        defaultDataLayer_Renamed = New SimpleDataLayer(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary, DataStoreProvider.CreateUpdatingStore(False, disposableObjects))
                     End If
                     Return defaultDataLayer_Renamed
                 End SyncLock

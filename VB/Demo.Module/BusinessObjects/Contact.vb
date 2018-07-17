@@ -11,7 +11,7 @@ Namespace Demo.Module.BusinessObjects
     Public Class Contact
         Inherits UserFriendlyIdPersistentObject
 
-        <PersistentAlias("concat('C', ToStr(SequentialNumber))")> _
+        <PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")> _
         Public ReadOnly Property ContactId() As String
             Get
                 Return Convert.ToString(EvaluateAlias("ContactId"))
