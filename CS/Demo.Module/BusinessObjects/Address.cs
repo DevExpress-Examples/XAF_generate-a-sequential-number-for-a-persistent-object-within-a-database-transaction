@@ -53,5 +53,8 @@ namespace Demo.Module.BusinessObjects {
             get { return ObjectFormatter.Format("{Country}; {Province}; {City}; {ZipCode}", this, EmptyEntriesMode.RemoveDelimiterWhenEntryIsEmpty); }
         }
         public Address(Session session) : base(session) { }
+        protected override string GetSequenceName() {
+            return string.Concat(ClassInfo.FullName, "-", Province.Replace(" ", "_"));
+        }
     }
 }
