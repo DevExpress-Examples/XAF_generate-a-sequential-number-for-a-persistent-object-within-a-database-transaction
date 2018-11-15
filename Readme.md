@@ -1,3 +1,16 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [Contact.cs](./CS/Demo.Module/BusinessObjects/Contact.cs) (VB: [Contact.vb](./VB/Demo.Module/BusinessObjects/Contact.vb))
+* [IDocument.cs](./CS/Demo.Module/BusinessObjects/IDocument.cs) (VB: [IDocument.vb](./VB/Demo.Module/BusinessObjects/IDocument.vb))
+* [WebApplication.cs](./CS/Demo.Web/WebApplication.cs) (VB: [WebApplication.vb](./VB/Demo.Web/WebApplication.vb))
+* [WinApplication.cs](./CS/Demo.Win/WinApplication.cs) (VB: [WinApplication.vb](./VB/Demo.Win/WinApplication.vb))
+* [IUserFriendlyIdDomainComponent.cs](./CS/GenerateUserFriendlyId.Module/BusinessObjects/IUserFriendlyIdDomainComponent.cs)
+* [SequenceGenerator.cs](./CS/GenerateUserFriendlyId.Module/BusinessObjects/SequenceGenerator.cs)
+* [UserFriendlyIdPersistentObject.cs](./CS/GenerateUserFriendlyId.Module/BusinessObjects/UserFriendlyIdPersistentObject.cs)
+* [Module.cs](./CS/GenerateUserFriendlyId.Module/Module.cs)
+* [Updater.cs](./CS/GenerateUserFriendlyId.Module/Updater.cs) (VB: [Updater.vb](./VB/GenerateUserFriendlyId.Module/Updater.vb))
+<!-- default file list end -->
 # How to generate a sequential number for a persistent object within a database transaction (XAF)
 
 
