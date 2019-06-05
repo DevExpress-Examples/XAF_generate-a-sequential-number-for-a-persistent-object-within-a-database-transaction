@@ -24,7 +24,7 @@ Namespace Demo.Module.Controllers
             For i As Integer = 0 To MaxTestersCount - 1
                 tasks(i) = Task.Factory.StartNew(Sub()
                     For j As Integer = 0 To 49
-                        Using os As IObjectSpace = Application.CreateObjectSpace()
+                        Using os As IObjectSpace = Application.CreateObjectSpace(GetType(Demo.Module.BusinessObjects.Contact))
                             Try
                                 DatabaseHelper.CreateContact(os)
                                 DatabaseHelper.CreateAddress(os)

@@ -22,7 +22,7 @@ namespace Demo.Module.Controllers {
             for (int i = 0; i < MaxTestersCount; i++) {
                 tasks[i] = Task.Factory.StartNew(() => {
                     for (int j = 0; j < 50; j++) {
-                        using (IObjectSpace os = Application.CreateObjectSpace()) {
+                        using (IObjectSpace os = Application.CreateObjectSpace(typeof(Demo.Module.BusinessObjects.Contact))) {
                             try {
                                 DatabaseHelper.CreateContact(os);
                                 DatabaseHelper.CreateAddress(os);
