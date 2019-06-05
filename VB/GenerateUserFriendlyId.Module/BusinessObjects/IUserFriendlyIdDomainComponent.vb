@@ -4,9 +4,9 @@ Imports DevExpress.Persistent.Validation
 Imports GenerateUserFriendlyId.Module
 
 Namespace GenerateUserFriendlyId.Module.BusinessObjects
-     <DomainComponent> _
-     Public Interface IUserFriendlyIdDomainComponent
-         Inherits ISupportSequentialNumber
+	 <DomainComponent>
+	 Public Interface IUserFriendlyIdDomainComponent
+		 Inherits ISupportSequentialNumber
 
-     End Interface
+	 End Interface
 End Namespace
