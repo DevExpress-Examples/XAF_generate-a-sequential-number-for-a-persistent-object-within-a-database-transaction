@@ -88,8 +88,5 @@ using(IObjectSpace os = Application.CreateObjectSpace(typeof(Sequence))) {
 ```
 
 
-<strong>Your feedback is needed!<br></strong>We would greatly appreciate it if you share your feedback in <a href="https://www.devexpress.com/Support/Center/">DevExpress Support Center</a> or rather <a href="https://www.devexpress.com/go/XAF_SequentialNumbers_T567184_Survey.aspx">participate in this short survey (~3 min)</a>.</p>
-
-<br/>
 
 
