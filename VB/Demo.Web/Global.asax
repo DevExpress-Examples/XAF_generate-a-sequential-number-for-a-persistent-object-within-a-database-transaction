@@ -1,1 +1,1 @@
-<%@ Application Language="C#" CodeBehind="Global.asax.cs" Inherits="GenerateUserFriendlyId.Web.Global"%>
+<%@ Application Language="VB" CodeBehind="Global.asax.vb" Inherits="GenerateUserFriendlyId.Web.Global"%>

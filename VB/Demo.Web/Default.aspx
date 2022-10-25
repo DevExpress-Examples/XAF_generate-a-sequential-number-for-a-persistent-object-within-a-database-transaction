@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="Default" EnableViewState="false"
-    ValidateRequest="false" CodeBehind="Default.aspx.cs" %>
+<%@ Page Language="VB" AutoEventWireup="true" Inherits="Default" EnableViewState="false"
+    ValidateRequest="false" CodeBehind="Default.aspx.vb" %>
 <%@ Register Assembly="DevExpress.ExpressApp.Web.v17.2" Namespace="DevExpress.ExpressApp.Web.Templates"
     TagPrefix="cc3" %>
 <%@ Register Assembly="DevExpress.ExpressApp.Web.v17.2" Namespace="DevExpress.ExpressApp.Web.Controls"
