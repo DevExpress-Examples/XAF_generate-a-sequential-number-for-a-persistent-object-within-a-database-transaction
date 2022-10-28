@@ -72,10 +72,9 @@ Check the original example description first for more information on the demonst
    
    ```
    
-   > **Note**
-   > The sequential number functionality shown in this example does not work with [DC shared parts](http://documentation.devexpress.com/#Xaf/DevExpressExpressAppDCITypesInfo_RegisterSharedParttopic), because it requires a custom base class, which is not allowed for shared parts.
+   Note, that the sequential number functionality shown in this example does not work with [DC shared parts](http://documentation.devexpress.com/#Xaf/DevExpressExpressAppDCITypesInfo_RegisterSharedParttopic), because it requires a custom base class, which is not allowed for shared parts.
    
-4. By default, separate sequences are generated for each busienss object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the costructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
+4. By default, separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the costructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
    
    ```cs
    protected override string GetSequenceName() {
