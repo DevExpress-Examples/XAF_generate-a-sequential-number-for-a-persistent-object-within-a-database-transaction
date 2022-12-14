@@ -18,7 +18,8 @@ Namespace GenerateUserFriendlyId.Web
 			InitializeComponent()
 		End Sub
 		Protected Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
-			AddHandler ASPxWebControl.CallbackError, AddressOf Application_Error
+			            DevExpress.ExpressApp.FrameworkSettings.DefaultSettingsCompatibilityMode = DevExpress.ExpressApp.FrameworkSettingsCompatibilityMode.v20_1
+AddHandler ASPxWebControl.CallbackError, AddressOf Application_Error
 
 #If EASYTEST Then
 			DevExpress.ExpressApp.Web.TestScripts.TestScriptsManager.EasyTestEnabled = True
