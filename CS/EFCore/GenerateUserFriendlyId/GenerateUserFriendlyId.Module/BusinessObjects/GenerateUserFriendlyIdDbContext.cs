@@ -43,5 +43,8 @@ public class GenerateUserFriendlyIdEFCoreDbContext : DbContext {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
         modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues);
+        modelBuilder.Entity<Address>().UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
+        modelBuilder.Entity<Contact>().UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
+        modelBuilder.Entity<Document>().UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
     }
 }
