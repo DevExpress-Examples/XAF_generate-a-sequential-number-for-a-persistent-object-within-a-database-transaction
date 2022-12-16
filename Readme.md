@@ -6,6 +6,9 @@
 
 # XAF - How to generate a sequential number for a persistent object within a database transaction
 
+> **Note**  
+> The description of this example is currently under construction and may not match the code in the example. We are currently working to provide you with up-to-date content.
+
 This example illustrates one of the possible approaches to implementing an identifier field with sequential values.
 
 ![](https://raw.githubusercontent.com/DevExpress-Examples/how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-xaf-e2829/17.2.8+/media/9ecee31b-58bf-11e6-80bf-00155d62480c.png)
