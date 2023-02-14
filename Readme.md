@@ -13,7 +13,7 @@ This example illustrates how to implement a business object with an identifier f
 > **Note** 
 > This Readme focuses on Entity Framework Core. For information on how to achieve the same functionality with XPO, see the **Readme.md** file in the [XPO solution's folder](./CS/XPO/).
 
-### Implementation Details
+## Implementation Details
 
 Entity Framework Core allows you to set up generation of sequential values for non-key data fields as described in the following article in the Entity Framework Core documentation: [Generated Values - Explicitly configuring value generation](https://learn.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations#explicitly-configuring-value-generation).
 
@@ -44,9 +44,17 @@ Use the steps bellow to generate sequential values for a business object's prope
 
 As an alternative technique, you can use a database-specific _sequence_ object to generate sequential values as described in the following article: [Sequences](https://learn.microsoft.com/en-us/ef/core/modeling/sequences)
 
-### Files to Review
+## Files to Review
 
 - [Address.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Address.cs)
 - [Contact.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Contact.cs)
 - [Document.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Document.cs)
 - [GenerateUserFriendlyIdDbContext.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/GenerateUserFriendlyIdDbContext.cs)
+
+## Documentation
+
+* [Business Model Design with Entity Framework Core](https://docs.devexpress.com/eXpressAppFramework/401886/business-model-design-orm/business-model-design-with-entity-framework-core)
+
+## Examples
+
+* [XAF - How to Generate a Sequential User-friendly Identifier Field (XPO)](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-and-user-friendly-identifier-field-within-an-xpo-business-e4904)
