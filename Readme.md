@@ -30,7 +30,7 @@ Use the steps bellow to generate sequential values for a business object's prope
    }
    ```
 
-2. To specify the property's value should be obtained from the database field after the business object has been saved, add the following code to the DbContext's `OnModelCreating` method implementation:
+2. Add the following code to the DbContext's `OnModelCreating` method implementation so that the generated values are always displayed in the UI right after the object has been saved:
 
    ```cs
    public class GenerateUserFriendlyIdEFCoreDbContext : DbContext {
