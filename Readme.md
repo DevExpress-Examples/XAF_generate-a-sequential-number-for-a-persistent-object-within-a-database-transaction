@@ -30,7 +30,7 @@ Use the steps bellow to generate sequential values for a business object's prope
    }
    ```
 
-2. Add the following code to the DbContext's `OnModelCreating` method implementation so that the generated values are always displayed in the UI right after the object has been saved:
+2. Add the following code to the DbContext's `OnModelCreating` method implementation so that the generated values are always displayed in the UI immediately after the object has been saved:
 
    ```cs
    public class GenerateUserFriendlyIdEFCoreDbContext : DbContext {
