@@ -46,10 +46,10 @@ As an alternative technique, you can use a database-specific _sequence_ object t
 
 ## Files to Review
 
-- [Address.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Address.cs)
-- [Contact.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Contact.cs)
-- [Document.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Document.cs)
-- [GenerateUserFriendlyIdDbContext.cs](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction-e2829/blob/22.2.3%2B/CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/GenerateUserFriendlyIdDbContext.cs)
+- [Address.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Address.cs)
+- [Contact.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Contact.cs)
+- [Document.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Document.cs)
+- [GenerateUserFriendlyIdDbContext.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/GenerateUserFriendlyIdDbContext.cs)
 
 ## Documentation
 
