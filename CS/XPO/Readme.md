@@ -68,7 +68,7 @@ Check the original example description first for more information on the demonst
    
    Note, that the sequential number functionality shown in this example does not work with [DC shared parts](http://documentation.devexpress.com/#Xaf/DevExpressExpressAppDCITypesInfo_RegisterSharedParttopic), because it requires a custom base class, which is not allowed for shared parts.
    
-4. By default, separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
+4. Separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
    
    ```cs
    protected override string GetSequenceName() {
@@ -84,7 +84,7 @@ Check the original example description first for more information on the demonst
 
 2. In the [Integrated Mode](https://docs.devexpress.com/eXpressAppFramework/113436/data-security-and-safety/security-system/security-tiers/2-tier-security-integrated-mode-and-ui-level) and [Middle Tier Application Server](https://docs.devexpress.com/eXpressAppFramework/113439/data-security-and-safety/security-system/security-tiers/middle-tier-security) scenario, the newly generated sequence number will appear in the Detail View only after a manual refresh (i.e., it will be empty right away after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
 
-3. You can specify or seed the initial sequence value manually: either by editing the **Sequence** table in the database or using the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) means by manipulating the `Sequence` objects, for example:
+3. You can specify the initial sequence value manually: either by editing the **Sequence** table in the database or using the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) means by manipulating the `Sequence` objects, for example:
 
    ```cs
    using(IObjectSpace os = Application.CreateObjectSpace(typeof(Sequence))) {
