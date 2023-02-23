@@ -8,9 +8,9 @@ This example illustrates how to implement a business object with an identifier f
 
 This is a variation of the [How to generate and assign a sequential number for a business object within a database transaction, while being a part of a successful saving process](https://www.devexpress.com/Support/Center/p/E2620) XPO example, which was specially adapted for XAF applications.
 
-In particular, for better reusability and more smooth integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. For more developer convenience, this solution is organized as a reusable XAF module (_GenerateUserFriendlyId.Module_). This module consists of several key parts:
+In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. For developer convenience, this solution is organized as a reusable XAF module (_GenerateUserFriendlyId.Module_). This module consists of several key parts:
 
-* `Sequence` and `SequenceGenerator` are auxiliary classes that take the main part in generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for the correct operation.
+* `Sequence` and `SequenceGenerator` are auxiliary classes that are primarily responsible for generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for correct operation.
 * `UserFriendlyIdPersistentObject` is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. Normally, you must inherit your own business classes from this base class to get the described functionality in your project.
 * `IUserFriendlyIdDomainComponent` is a base domain component that should be implemented by all domain components that require the described functionality.
 
@@ -18,7 +18,7 @@ Check the original example description first for more information on the demonst
 
 ## Implementation Details
 
-1. Copy and include the _GenerateUserFriendlyId.Module_ project into your solution and make sure it is built successfully. Invoke the [Module or Application Designer](https://docs.devexpress.com/eXpressAppFramework/112828/installation-upgrade-version-history/visual-studio-integration/module-designer) for the _YourSolutionName.Module/Module.xx_ or _YourSolutionName.Wxx/WxxApplication.xx_ files by double-clicking it in Solution Explorer. Invoke the Toolbox (Alt+X+T) and then drag & drop the _GenerateUserFriendlyIdModule_ component into the modules list on the left.
+1. Copy and include the _GenerateUserFriendlyId.Module_ project into your solution and make sure it is built successfully. Invoke the [Module or Application Designer](https://docs.devexpress.com/eXpressAppFramework/112828/installation-upgrade-version-history/visual-studio-integration/module-designer) for the _YourSolutionName.Module/Module.xx_ or _YourSolutionName.Wxx/WxxApplication.xx_ file by double-clicking it in Solution Explorer. Invoke the Toolbox (press Alt+X+T) and then drag and drop the _GenerateUserFriendlyIdModule_ component onto the modules list on the left.
 
 2. For apps with no security or with the Client-Side Security (`XPObjectSpaceProvider` or `SecuredObjectSpaceProvider`):
    
@@ -37,9 +37,9 @@ Check the original example description first for more information on the demonst
    
    For apps with the Middle Tier Security (`DataServerObjectSpaceProvider`):
    
-   In the _YourSolutionName.ApplicationServer_ project, locate and modify the `serverApplication_CreateCustomObjectSpaceProvider` or `CreateDefaultObjectSpaceProvider`  methods to call the `SequenceGenerator.Initialize` method in the same manner.
+   In the _YourSolutionName.ApplicationServer_ project, locate and modify the `serverApplication_CreateCustomObjectSpaceProvider` or `CreateDefaultObjectSpaceProvider` method to call the `SequenceGenerator.Initialize` method in the same manner.
 
-3. If you are using pure XPO classes, then inherit your business classes to which you want to add sequential numbers from the module's `UserFriendlyIdPersistentObject` class. Declare a calculated property that uses the `SequenceNumber` property of the base class to produce an string identifier according to the required format:
+3. If you are using pure XPO classes, then inherit your business classes to which you want to add sequential numbers from the module's `UserFriendlyIdPersistentObject` class. Declare a calculated property that uses the `SequenceNumber` property of the base class to produce a string identifier according to the required format:
    
    ```cs
    public class Contact : GenerateUserFriendlyId.Module.BusinessObjects.UserFriendlyIdPersistentObject {
@@ -66,7 +66,7 @@ Check the original example description first for more information on the demonst
    
    ```
    
-   Note, that the sequential number functionality shown in this example does not work with [DC shared parts](http://documentation.devexpress.com/#Xaf/DevExpressExpressAppDCITypesInfo_RegisterSharedParttopic), because it requires a custom base class, which is not allowed for shared parts.
+   Note that the sequential number functionality shown in this example does not work with [DC shared parts](http://documentation.devexpress.com/#Xaf/DevExpressExpressAppDCITypesInfo_RegisterSharedParttopic), because it requires a custom base class, which is not allowed for shared parts.
    
 4. By default, separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
    
@@ -82,7 +82,7 @@ Check the original example description first for more information on the demonst
 
 1. As an alternative, you can implement much simpler solutions at the database level or by using the built-in `DistributedIdGeneratorHelper.Generate` method. Refer to the following article for more details: [An overview of approaches to implementing a user-friendly sequential number for use with an XPO business class](https://www.devexpress.com/Support/Center/p/T567184").
 
-2. In the [Integrated Mode](https://docs.devexpress.com/eXpressAppFramework/113436/data-security-and-safety/security-system/security-tiers/2-tier-security-integrated-mode-and-ui-level) and [Middle Tier Application Server](https://docs.devexpress.com/eXpressAppFramework/113439/data-security-and-safety/security-system/security-tiers/middle-tier-security) scenario, the newly generated sequence number will appear in the Detail View only after a manual refresh (i.e., it will be empty right away after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
+2. In the [Integrated Mode](https://docs.devexpress.com/eXpressAppFramework/113436/data-security-and-safety/security-system/security-tiers/2-tier-security-integrated-mode-and-ui-level) and [Middle Tier Application Server](https://docs.devexpress.com/eXpressAppFramework/113439/data-security-and-safety/security-system/security-tiers/middle-tier-security) scenario, the newly generated sequence number will appear in the Detail View only after a manual refresh (in other words, it will be empty right after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the **Auto-Generate Unique Number Sequence** KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
 
 3. You can specify or seed the initial sequence value manually: either by editing the **Sequence** table in the database or using the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) means by manipulating the `Sequence` objects, for example:
 
