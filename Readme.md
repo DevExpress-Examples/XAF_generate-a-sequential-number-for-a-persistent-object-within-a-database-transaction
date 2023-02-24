@@ -46,10 +46,10 @@ As an alternative technique, you can use a database-specific _sequence_ object t
 
 ## Files to Review
 
-- [Address.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Address.cs)
-- [Contact.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Contact.cs)
-- [Document.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/Document.cs)
-- [GenerateUserFriendlyIdDbContext.cs](./CS/EFCore/GenerateUserFriendlyId/GenerateUserFriendlyId.Module/BusinessObjects/GenerateUserFriendlyIdDbContext.cs)
+- [Address.cs](./CS/EFCore/GenerateUserFriendlyId.Module/BusinessObjects/Address.cs)
+- [Contact.cs](./CS/EFCore/GenerateUserFriendlyId.Module/BusinessObjects/Contact.cs)
+- [Document.cs](./CS/EFCore/GenerateUserFriendlyId.Module/BusinessObjects/Document.cs)
+- [GenerateUserFriendlyIdDbContext.cs](./CS/EFCore/GenerateUserFriendlyId.Module/BusinessObjects/GenerateUserFriendlyIdDbContext.cs)
 
 ## Documentation
 
