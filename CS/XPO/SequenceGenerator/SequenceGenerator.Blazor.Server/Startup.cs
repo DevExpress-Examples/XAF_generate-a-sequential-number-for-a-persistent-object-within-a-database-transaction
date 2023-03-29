@@ -35,7 +35,7 @@ public class Startup {
                 .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
             	.Add<SequenceGeneratorBlazorModule>();
             builder.ObjectSpaceProviders
-                .AddMyXpo((serviceProvider, options) => {
+                .AddXpo((serviceProvider, options) => {
                     string connectionString = null;
                     if (Configuration.GetConnectionString("ConnectionString") != null) {
                         connectionString = Configuration.GetConnectionString("ConnectionString");
@@ -49,7 +49,10 @@ public class Startup {
                     options.ConnectionString = connectionString;
                     options.ThreadSafe = true;
                     options.UseSharedDataStoreProvider = true;
-
+                    var dataStoreProviderManager = new DataStoreProviderManager();
+                    var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
+                    GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+                    options.UseCustomDataStoreProvider(dataStoreProvider);
 
                 })
                 .AddNonPersistent();

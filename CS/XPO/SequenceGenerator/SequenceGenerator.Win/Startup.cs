@@ -10,6 +10,7 @@ using DevExpress.XtraEditors;
 using DevExpress.ExpressApp.Design;
 using GenerateUserFriendlyId.Module;
 namespace SequenceGenerator.Win;
+using DevExpress.ExpressApp.ApplicationBuilder.Internal;
 
 public class ApplicationBuilder : IDesignTimeApplicationFactory {
     public static WinApplication BuildApplication(string connectionString) {
@@ -19,8 +20,12 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
             .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
         	.Add<SequenceGeneratorWinModule>();
         builder.ObjectSpaceProviders
-            .AddMyXpo((application, options) => {
+            .AddXpo((application, options) => {
                 options.ConnectionString = connectionString;
+                var dataStoreProviderManager = new DataStoreProviderManager();
+                var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
+                GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+                options.UseCustomDataStoreProvider(dataStoreProvider);
             })
             .AddNonPersistent();
         builder.AddBuildStep(application => {
