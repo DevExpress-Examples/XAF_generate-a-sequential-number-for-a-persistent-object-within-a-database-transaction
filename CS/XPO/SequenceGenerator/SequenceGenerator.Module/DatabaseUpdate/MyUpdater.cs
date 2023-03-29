@@ -1,6 +1,4 @@
-﻿//,new MyUpdater(objectSpace,versionFromDB)
-//            defaultRole.AddNavigationPermission(@"Application/NavigationItems/Items/Default/Items/Contact_ListView", SecurityPermissionState.Allow);
-            //defaultRole.AddTypePermissionsRecursively<Contact>(SecurityOperations.CRUDAccess, SecurityPermissionState.Allow);
+﻿
 using System;
 using System.Linq;
 using DevExpress.ExpressApp;
@@ -13,7 +11,7 @@ using DevExpress.Persistent.BaseImpl;
 using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 
-using Demo.Module.BusinessObjects;
+using dxTestSolution.Module.BusinessObjects;
 
 namespace dxTestSolution.Module.DatabaseUpdate {
     // For more typical usage scenarios, be sure to check out https://documentation.devexpress.com/eXpressAppFramework/clsDevExpressExpressAppUpdatingModuleUpdatertopic.aspx
@@ -23,7 +21,7 @@ namespace dxTestSolution.Module.DatabaseUpdate {
         }
         public override void UpdateDatabaseAfterUpdateSchema() {
             base.UpdateDatabaseAfterUpdateSchema();
-		
+	
             var cnt = ObjectSpace.GetObjects<Contact>().Count;
             if(cnt > 0) {
                 return;
@@ -33,6 +31,11 @@ namespace dxTestSolution.Module.DatabaseUpdate {
 				contact.FirstName = "FirstName" + i;
 				contact.LastName = "LastName" + i;
 				contact.Age = i * 10;
+                for(int j = 0; j < 2; j++) {
+                    var task = ObjectSpace.CreateObject<MyTask>();
+					task.Subject="Subject" + i + " - " + j;
+                    task.AssignedTo = contact;
+                }
             }
             //secur#0  
 			ObjectSpace.CommitChanges(); //Uncomment this line to persist created object(s).
