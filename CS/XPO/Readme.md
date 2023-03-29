@@ -10,7 +10,7 @@ This is a variation of the [How to generate and assign a sequential number for 
 
 In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
 
-* `Sequence` and [SequenceGenerator](./CS/XPO/SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) are auxiliary classes that are primarily responsible for generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for correct operation.
+* `Sequence` and [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) are auxiliary classes that are primarily responsible for generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for correct operation.
 * `UserFriendlyIdPersistentObject` is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. Normally, you must inherit your own business classes from this base class to get the described functionality in your project.
 
 
