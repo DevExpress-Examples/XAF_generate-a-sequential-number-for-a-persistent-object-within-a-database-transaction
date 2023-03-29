@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Server.Circuits;
 using DevExpress.ExpressApp.Xpo;
 using SequenceGenerator.Blazor.Server.Services;
 using DevExpress.ExpressApp.Core;
+using DevExpress.ExpressApp.ApplicationBuilder.Internal;
 
 namespace SequenceGenerator.Blazor.Server;
 
@@ -46,6 +47,8 @@ public class Startup {
                     options.ConnectionString = connectionString;
                     options.ThreadSafe = true;
                     options.UseSharedDataStoreProvider = true;
+
+               
                 })
                 .AddNonPersistent();
         });
