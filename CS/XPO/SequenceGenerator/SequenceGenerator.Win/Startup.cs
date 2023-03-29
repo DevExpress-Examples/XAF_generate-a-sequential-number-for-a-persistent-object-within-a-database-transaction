@@ -8,7 +8,7 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.XtraEditors;
 using DevExpress.ExpressApp.Design;
-
+using GenerateUserFriendlyId.Module;
 namespace SequenceGenerator.Win;
 
 public class ApplicationBuilder : IDesignTimeApplicationFactory {
@@ -19,7 +19,7 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
             .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
         	.Add<SequenceGeneratorWinModule>();
         builder.ObjectSpaceProviders
-            .AddXpo((application, options) => {
+            .AddMyXpo((application, options) => {
                 options.ConnectionString = connectionString;
             })
             .AddNonPersistent();
