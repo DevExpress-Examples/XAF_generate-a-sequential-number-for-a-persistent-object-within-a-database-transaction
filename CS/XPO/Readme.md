@@ -8,11 +8,11 @@ This example illustrates how to implement a business object with an identifier f
 
 This is a variation of the [How to generate and assign a sequential number for a business object within a database transaction, while being a part of a successful saving process](https://www.devexpress.com/Support/Center/p/E2620) XPO example, which was specially adapted for XAF applications.
 
-In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. For developer convenience, this solution is organized as a reusable XAF module (_GenerateUserFriendlyId.Module_). This module consists of several key parts:
+In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
 
-* `Sequence` and `SequenceGenerator` are auxiliary classes that are primarily responsible for generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for correct operation.
+* `Sequence` and [SequenceGenerator](./CS/XPO/SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) are auxiliary classes that are primarily responsible for generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for correct operation.
 * `UserFriendlyIdPersistentObject` is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. Normally, you must inherit your own business classes from this base class to get the described functionality in your project.
-* `IUserFriendlyIdDomainComponent` is a base domain component that should be implemented by all domain components that require the described functionality.
+
 
 Check the original example description first for more information on the demonstrated scenarios and functionality.
 
