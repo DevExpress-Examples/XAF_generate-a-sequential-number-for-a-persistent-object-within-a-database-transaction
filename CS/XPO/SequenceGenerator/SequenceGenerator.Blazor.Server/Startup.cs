@@ -8,6 +8,8 @@ using DevExpress.ExpressApp.Xpo;
 using SequenceGenerator.Blazor.Server.Services;
 using DevExpress.ExpressApp.Core;
 using DevExpress.ExpressApp.ApplicationBuilder.Internal;
+using DevExpress.ExpressApp.DC;
+using GenerateUserFriendlyId.Module;
 
 namespace SequenceGenerator.Blazor.Server;
 
@@ -33,9 +35,9 @@ public class Startup {
                 .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
             	.Add<SequenceGeneratorBlazorModule>();
             builder.ObjectSpaceProviders
-                .AddXpo((serviceProvider, options) => {
+                .AddMyXpo((serviceProvider, options) => {
                     string connectionString = null;
-                    if(Configuration.GetConnectionString("ConnectionString") != null) {
+                    if (Configuration.GetConnectionString("ConnectionString") != null) {
                         connectionString = Configuration.GetConnectionString("ConnectionString");
                     }
 #if EASYTEST
@@ -48,7 +50,7 @@ public class Startup {
                     options.ThreadSafe = true;
                     options.UseSharedDataStoreProvider = true;
 
-               
+
                 })
                 .AddNonPersistent();
         });
