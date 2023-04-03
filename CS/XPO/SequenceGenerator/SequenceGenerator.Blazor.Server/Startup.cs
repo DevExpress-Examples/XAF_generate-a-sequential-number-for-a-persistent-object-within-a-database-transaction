@@ -29,6 +29,7 @@ public class Startup {
         services.AddServerSideBlazor();
         services.AddHttpContextAccessor();
         services.AddScoped<CircuitHandler, CircuitHandlerProxy>();
+        services.AddSingleton<DataStoreProviderManager>();
         services.AddXaf(Configuration, builder => {
             builder.UseApplication<SequenceGeneratorBlazorApplication>();
             builder.Modules
@@ -49,7 +50,7 @@ public class Startup {
                     options.ConnectionString = connectionString;
                     options.ThreadSafe = true;
                     options.UseSharedDataStoreProvider = true;
-                    var dataStoreProviderManager = new DataStoreProviderManager();
+                    var dataStoreProviderManager = serviceProvider.GetService<DataStoreProviderManager>();
                     var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
                     GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
                     options.UseCustomDataStoreProvider(dataStoreProvider);
