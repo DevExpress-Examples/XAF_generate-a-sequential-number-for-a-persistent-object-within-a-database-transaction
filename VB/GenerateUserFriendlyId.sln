@@ -1,4 +1,4 @@
-﻿Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GenerateUserFriendlyId.Module", "GenerateUserFriendlyId.Module\GenerateUserFriendlyId.Module.vbproj", "{484A8217-DD6B-4E8F-B47E-F1F64D03BBB6}"
 EndProject

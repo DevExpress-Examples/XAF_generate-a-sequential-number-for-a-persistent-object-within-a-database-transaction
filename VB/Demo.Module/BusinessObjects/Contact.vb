@@ -1,84 +1,97 @@
-﻿Imports System
+Imports System
 Imports DevExpress.Xpo
 Imports System.ComponentModel
-Imports System.Collections.Generic
 Imports DevExpress.Persistent.Base
-Imports DevExpress.Persistent.BaseImpl
 Imports GenerateUserFriendlyId.Module.BusinessObjects
 
 Namespace Demo.Module.BusinessObjects
-    <DefaultClassOptions, DefaultProperty("FullName"), ImageName("BO_Person")> _
+
+    <DefaultClassOptions>
+    <DefaultProperty("FullName")>
+    <ImageName("BO_Person")>
     Public Class Contact
         Inherits UserFriendlyIdPersistentObject
 
-        <PersistentAlias("concat('C', ToStr(SequentialNumber))")> _
-        Public ReadOnly Property ContactId() As String
+        <PersistentAlias("concat('C', ToStr(SequentialNumber))")>
+        Public ReadOnly Property ContactId As String
             Get
                 Return Convert.ToString(EvaluateAlias("ContactId"))
             End Get
         End Property
 
+        Private firstNameField As String
 
-        Private firstName_Renamed As String
+        Private lastNameField As String
 
-        Private lastName_Renamed As String
+        Private sexField As Sex
 
-        Private sex_Renamed As Sex
+        Private ageField As Integer
 
-        Private age_Renamed As Integer
+        Private addressField As Address
 
-        Private address_Renamed As Address
-        Public Property FirstName() As String
+        Public Property FirstName As String
             Get
-                Return firstName_Renamed
+                Return firstNameField
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("FirstName", firstName_Renamed, value)
+                SetPropertyValue("FirstName", firstNameField, value)
             End Set
         End Property
-        Public Property LastName() As String
+
+        Public Property LastName As String
             Get
-                Return lastName_Renamed
+                Return lastNameField
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("LastName", lastName_Renamed, value)
+                SetPropertyValue("LastName", lastNameField, value)
             End Set
         End Property
-        Public Property Age() As Integer
+
+        Public Property Age As Integer
             Get
-                Return age_Renamed
+                Return ageField
             End Get
+
             Set(ByVal value As Integer)
-                SetPropertyValue("Age", age_Renamed, value)
+                SetPropertyValue("Age", ageField, value)
             End Set
         End Property
-        Public Property Sex() As Sex
+
+        Public Property Sex As Sex
             Get
-                Return sex_Renamed
+                Return sexField
             End Get
+
             Set(ByVal value As Sex)
-                SetPropertyValue("Sex", sex_Renamed, value)
+                SetPropertyValue("Sex", sexField, value)
             End Set
         End Property
-        <Association> _
-        Public Property Address() As Address
+
+        <Association>
+        Public Property Address As Address
             Get
-                Return address_Renamed
+                Return addressField
             End Get
+
             Set(ByVal value As Address)
-                SetPropertyValue("Address", address_Renamed, value)
+                SetPropertyValue("Address", addressField, value)
             End Set
         End Property
-        <PersistentAlias("concat(FirstName, LastName)")> _
-        Public ReadOnly Property FullName() As String
+
+        <PersistentAlias("concat(FirstName, LastName)")>
+        Public ReadOnly Property FullName As String
             Get
                 Return ObjectFormatter.Format("{FirstName} {LastName}", Me, EmptyEntriesMode.RemoveDelimiterWhenEntryIsEmpty)
             End Get
         End Property
+
         Public Sub New(ByVal session As Session)
             MyBase.New(session)
         End Sub
     End Class
+
     Public Enum Sex
         Male
         Female

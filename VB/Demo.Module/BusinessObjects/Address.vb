@@ -1,93 +1,110 @@
-﻿Imports System
+Imports System
 Imports DevExpress.Xpo
 Imports System.ComponentModel
-Imports System.Collections.Generic
 Imports DevExpress.Persistent.Base
 Imports GenerateUserFriendlyId.Module.BusinessObjects
 
 Namespace Demo.Module.BusinessObjects
-    <DefaultClassOptions, DefaultProperty("FullAddress"), ImageName("BO_Address")> _
+
+    <DefaultClassOptions>
+    <DefaultProperty("FullAddress")>
+    <ImageName("BO_Address")>
     Public Class Address
         Inherits UserFriendlyIdPersistentObject
 
+        Private zipCodeField As String
 
-        Private zipCode_Renamed As String
+        Private countryField As String
 
-        Private country_Renamed As String
+        Private provinceField As String
 
-        Private province_Renamed As String
+        Private cityField As String
 
-        Private city_Renamed As String
+        Private address1Field As String
 
-        Private address1_Renamed As String
+        Private address2Field As String
 
-        Private address2_Renamed As String
-        <PersistentAlias("concat('A', ToStr(SequentialNumber))")> _
-        Public ReadOnly Property AddressId() As String
+        <PersistentAlias("concat('A', ToStr(SequentialNumber))")>
+        Public ReadOnly Property AddressId As String
             Get
                 Return Convert.ToString(EvaluateAlias("AddressId"))
             End Get
         End Property
-        Public Property Province() As String
+
+        Public Property Province As String
             Get
-                Return province_Renamed
+                Return provinceField
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("Province", province_Renamed, value)
+                SetPropertyValue("Province", provinceField, value)
             End Set
         End Property
-        Public Property ZipCode() As String
+
+        Public Property ZipCode As String
             Get
-                Return zipCode_Renamed
+                Return zipCodeField
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("ZipCode", zipCode_Renamed, value)
+                SetPropertyValue("ZipCode", zipCodeField, value)
             End Set
         End Property
-        Public Property Country() As String
+
+        Public Property Country As String
             Get
-                Return country_Renamed
+                Return countryField
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("Country", country_Renamed, value)
+                SetPropertyValue("Country", countryField, value)
             End Set
         End Property
-        Public Property City() As String
+
+        Public Property City As String
             Get
-                Return city_Renamed
+                Return cityField
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("City", city_Renamed, value)
+                SetPropertyValue("City", cityField, value)
             End Set
         End Property
-        Public Property Address1() As String
+
+        Public Property Address1 As String
             Get
-                Return address1_Renamed
+                Return address1Field
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("Address1", address1_Renamed, value)
+                SetPropertyValue("Address1", address1Field, value)
             End Set
         End Property
-        Public Property Address2() As String
+
+        Public Property Address2 As String
             Get
-                Return address2_Renamed
+                Return address2Field
             End Get
+
             Set(ByVal value As String)
-                SetPropertyValue("Address2", address2_Renamed, value)
+                SetPropertyValue("Address2", address2Field, value)
             End Set
         End Property
-        <Association> _
-        Public ReadOnly Property Persons() As XPCollection(Of Contact)
+
+        <Association>
+        Public ReadOnly Property Persons As XPCollection(Of Contact)
             Get
                 Return GetCollection(Of Contact)("Persons")
             End Get
         End Property
-        <PersistentAlias("concat(Country, Province, City, ZipCode)")> _
-        Public ReadOnly Property FullAddress() As String
+
+        <PersistentAlias("concat(Country, Province, City, ZipCode)")>
+        Public ReadOnly Property FullAddress As String
             Get
                 Return ObjectFormatter.Format("{Country}; {Province}; {City}; {ZipCode}", Me, EmptyEntriesMode.RemoveDelimiterWhenEntryIsEmpty)
             End Get
         End Property
+
         Public Sub New(ByVal session As Session)
             MyBase.New(session)
         End Sub

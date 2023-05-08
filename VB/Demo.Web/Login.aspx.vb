@@ -1,12 +1,10 @@
-﻿Imports System
-
-Imports DevExpress.ExpressApp.Web
+Imports System
 Imports DevExpress.ExpressApp.Web.Templates
 
-Partial Public Class LoginPage
+Public Partial Class LoginPage
     Inherits BaseXafPage
 
-    Public Overrides ReadOnly Property InnerContentPlaceHolder() As System.Web.UI.Control
+    Public Overrides ReadOnly Property InnerContentPlaceHolder As Web.UI.Control
         Get
             Return Content
         End Get
