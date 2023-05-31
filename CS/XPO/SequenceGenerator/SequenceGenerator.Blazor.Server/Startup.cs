@@ -51,7 +51,7 @@ public class Startup {
                     options.ThreadSafe = true;
                     options.UseSharedDataStoreProvider = true;
                     var dataStoreProviderManager = serviceProvider.GetService<DataStoreProviderManager>();
-                    var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
+                    IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
                     GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
                     options.UseCustomDataStoreProvider(dataStoreProvider);
 

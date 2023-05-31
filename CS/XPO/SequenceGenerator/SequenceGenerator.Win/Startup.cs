@@ -11,6 +11,7 @@ using DevExpress.ExpressApp.Design;
 using GenerateUserFriendlyId.Module;
 namespace SequenceGenerator.Win;
 using DevExpress.ExpressApp.ApplicationBuilder.Internal;
+using DevExpress.ExpressApp.Xpo;
 
 public class ApplicationBuilder : IDesignTimeApplicationFactory {
     public static WinApplication BuildApplication(string connectionString) {
@@ -23,7 +24,7 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
             .AddXpo((application, options) => {
                 options.ConnectionString = connectionString;
                 var dataStoreProviderManager = new DataStoreProviderManager();
-                var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
+                IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
                 GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
                 options.UseCustomDataStoreProvider(dataStoreProvider);
             })
