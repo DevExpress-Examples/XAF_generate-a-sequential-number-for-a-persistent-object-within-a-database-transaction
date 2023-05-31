@@ -23,7 +23,6 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
         builder.ObjectSpaceProviders
             .AddXpo((application, options) => {
                 options.ConnectionString = connectionString;
-                var dataStoreProviderManager = new DataStoreProviderManager();
                 IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
                 GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
                 options.UseCustomDataStoreProvider(dataStoreProvider);
