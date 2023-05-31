@@ -25,9 +25,8 @@ Check the original example description first for more information on the demonst
 
     For apps without security:
 
-        Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
-
-        ```cs{10-13}
+Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
+```cs{10-13}
     public class Startup {
     //...
         public void ConfigureServices(IServiceCollection services) {
@@ -41,9 +40,10 @@ Check the original example description first for more information on the demonst
                         var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
                         GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
                         options.UseCustomDataStoreProvider(dataStoreProvider);
-        ```
-        WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
-   ```cs{11-14}
+```
+
+WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
+```cs{11-14}
    //...
     public class ApplicationBuilder : IDesignTimeApplicationFactory {
         public static WinApplication BuildApplication(string connectionString) {
@@ -61,11 +61,11 @@ Check the original example description first for more information on the demonst
    
    ```
    
-    For app with Security:
+For app with Security:
 
-        Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
 
-        ```cs{10-13}
+Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
+```cs{10-13}
     public class Startup {
     //...
         public void ConfigureServices(IServiceCollection services) {
@@ -79,9 +79,10 @@ Check the original example description first for more information on the demonst
                         var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
                         GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
                         options.UseCustomDataStoreProvider(dataStoreProvider);
-        ```
-        WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
-   ```cs{11-14}
+```
+
+WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
+```cs{11-14}
    //...
     public class ApplicationBuilder : IDesignTimeApplicationFactory {
         public static WinApplication BuildApplication(string connectionString) {
@@ -97,11 +98,11 @@ Check the original example description first for more information on the demonst
                     options.UseCustomDataStoreProvider(dataStoreProvider);
                 })
    
-   ```    
+```    
 
-   For apps with the Middle Tier Security:
-   YourSolutionName\YourSolutionName.MiddleTierWebApi\MiddleTierSetup\WebApiApplicationSetup.cs
-   ```cs{5-7}
+For apps with the Middle Tier Security:
+YourSolutionName\YourSolutionName.MiddleTierWebApi\MiddleTierSetup\WebApiApplicationSetup.cs
+```cs{5-7}
 public class WebApiApplicationSetup : IWebApiApplicationSetup {
     public void SetupApplication(AspNetCoreApplication application) {
         application.Modules.Add(new SequentalSecurityMiddle.Module.SequentalSecurityMiddleModule());
@@ -109,29 +110,29 @@ public class WebApiApplicationSetup : IWebApiApplicationSetup {
         IOptions<DataServerSecurityOptions> options = application.ServiceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
         IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(options.Value.ConnectionString, null);
         GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-   ```
+```
 
 3. Inherit your business classes to which you want to add sequential numbers from the module's `UserFriendlyIdPersistentObject` class. Declare a calculated property that uses the `SequenceNumber` property of the base class to produce a string identifier according to the required format:
    
-   ```cs
+```cs
    public class Contact : GenerateUserFriendlyId.Module.BusinessObjects.UserFriendlyIdPersistentObject {
        [PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")]
        public string ContactId {
            get { return Convert.ToString(EvaluateAlias("ContactId")); }
        }
    
-   ```
+```
    
   
    
 
 Separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
    
-   ```cs
+```cs
    protected override string GetSequenceName() {
        return string.Concat(ClassInfo.FullName, "-", Province.Replace(" ", "_"));
    }
-   ```
+```
    
 ## Additional Information
 
@@ -141,13 +142,13 @@ Separate sequences are generated for each business object type. If you need to c
 
 3. You can specify the initial sequence value manually: either by editing the **Sequence** table in the database or using the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) means by manipulating the `Sequence` objects, for example:
 
-   ```cs
+```cs
    using(IObjectSpace os = Application.CreateObjectSpace(typeof(Sequence))) {
        Sequence sequence = os.FindObject<Sequence>(CriteriaOperator.Parse("TypeName=?", typeof(Contact).FullName));
        sequence.NextSequence = 5;
        os.CommitChanges();
    }
-   ```
+```
    
 ## Documentation
    
