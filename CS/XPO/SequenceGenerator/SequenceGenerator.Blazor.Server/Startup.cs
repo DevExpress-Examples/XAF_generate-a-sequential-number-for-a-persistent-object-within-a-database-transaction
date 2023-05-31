@@ -4,12 +4,13 @@ using DevExpress.ExpressApp.Blazor.Services;
 using DevExpress.Persistent.Base;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Server.Circuits;
-using DevExpress.ExpressApp.Xpo;
 using SequenceGenerator.Blazor.Server.Services;
 using DevExpress.ExpressApp.Core;
 using DevExpress.ExpressApp.ApplicationBuilder.Internal;
 using DevExpress.ExpressApp.DC;
 using GenerateUserFriendlyId.Module;
+using dxTestSolution.Module.BusinessObjects;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace SequenceGenerator.Blazor.Server;
 
@@ -29,7 +30,6 @@ public class Startup {
         services.AddServerSideBlazor();
         services.AddHttpContextAccessor();
         services.AddScoped<CircuitHandler, CircuitHandlerProxy>();
-        services.AddSingleton<DataStoreProviderManager>();
         services.AddXaf(Configuration, builder => {
             builder.UseApplication<SequenceGeneratorBlazorApplication>();
             builder.Modules
@@ -50,11 +50,6 @@ public class Startup {
                     options.ConnectionString = connectionString;
                     options.ThreadSafe = true;
                     options.UseSharedDataStoreProvider = true;
-                    var dataStoreProviderManager = serviceProvider.GetService<DataStoreProviderManager>();
-                    IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                    GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                    options.UseCustomDataStoreProvider(dataStoreProvider);
-
                 })
                 .AddNonPersistent();
         });
@@ -75,6 +70,7 @@ public class Startup {
         app.UseStaticFiles();
         app.UseRouting();
         app.UseXaf();
+        app.UseMiddleware<MyRegisterSequenceGeneratorMiddleware>();
         app.UseEndpoints(endpoints => {
             endpoints.MapXafEndpoints();
             endpoints.MapBlazorHub();
