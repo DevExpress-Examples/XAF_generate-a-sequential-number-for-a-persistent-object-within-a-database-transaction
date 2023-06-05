@@ -19,19 +19,20 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
         builder.UseApplication<SequenceGeneratorWindowsFormsApplication>();
         builder.Modules
             .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
-        	.Add<SequenceGeneratorWinModule>();
+            .Add<SequenceGeneratorWinModule>();
         builder.ObjectSpaceProviders
-            .AddXpo((application, options) => {
-                options.ConnectionString = connectionString;
+            .Add((app, _) => {
+                XPObjectSpaceProviderOptions xPObjectSpaceProviderOptions = new XPObjectSpaceProviderOptions();
                 IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
                 GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                options.UseCustomDataStoreProvider(dataStoreProvider);
+                xPObjectSpaceProviderOptions.ConnectionString = connectionString;
+                return new XPObjectSpaceProvider(dataStoreProvider, app.TypesInfo, null, xPObjectSpaceProviderOptions.ThreadSafe, xPObjectSpaceProviderOptions.UseSeparateDataLayers);
             })
             .AddNonPersistent();
         builder.AddBuildStep(application => {
             application.ConnectionString = connectionString;
 #if DEBUG
-            if(System.Diagnostics.Debugger.IsAttached && application.CheckCompatibilityType == CheckCompatibilityType.DatabaseSchema) {
+            if (System.Diagnostics.Debugger.IsAttached && application.CheckCompatibilityType == CheckCompatibilityType.DatabaseSchema) {
                 application.DatabaseUpdateMode = DatabaseUpdateMode.UpdateDatabaseAlways;
             }
 #endif

@@ -11,6 +11,8 @@ using DevExpress.ExpressApp.DC;
 using GenerateUserFriendlyId.Module;
 using dxTestSolution.Module.BusinessObjects;
 using Microsoft.AspNetCore.Http.Extensions;
+using DevExpress.ExpressApp.Xpo;
+using Microsoft.Extensions.Options;
 
 namespace SequenceGenerator.Blazor.Server;
 
@@ -23,6 +25,7 @@ public class Startup {
 
     // This method gets called by the runtime. Use this method to add services to the container.
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
     public void ConfigureServices(IServiceCollection services) {
         services.AddSingleton(typeof(Microsoft.AspNetCore.SignalR.HubConnectionHandler<>), typeof(ProxyHubConnectionHandler<>));
 
@@ -34,22 +37,20 @@ public class Startup {
             builder.UseApplication<SequenceGeneratorBlazorApplication>();
             builder.Modules
                 .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
-            	.Add<SequenceGeneratorBlazorModule>();
+                .Add<SequenceGeneratorBlazorModule>();
             builder.ObjectSpaceProviders
-                .AddXpo((serviceProvider, options) => {
+                .Add((_serviceProvider) => {
+                    XPObjectSpaceProviderOptions xPObjectSpaceProviderOptions = new XPObjectSpaceProviderOptions();
                     string connectionString = null;
                     if (Configuration.GetConnectionString("ConnectionString") != null) {
                         connectionString = Configuration.GetConnectionString("ConnectionString");
                     }
-#if EASYTEST
-                    if(Configuration.GetConnectionString("EasyTestConnectionString") != null) {
-                        connectionString = Configuration.GetConnectionString("EasyTestConnectionString");
-                    }
-#endif
-                    ArgumentNullException.ThrowIfNull(connectionString);
-                    options.ConnectionString = connectionString;
-                    options.ThreadSafe = true;
-                    options.UseSharedDataStoreProvider = true;
+                    IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+                    GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+                    xPObjectSpaceProviderOptions.ConnectionString = connectionString;
+                    xPObjectSpaceProviderOptions.ThreadSafe = true;
+                    xPObjectSpaceProviderOptions.UseSharedDataStoreProvider = true;
+                    return new XPObjectSpaceProvider(dataStoreProvider, _serviceProvider.GetRequiredService<ITypesInfo>(), null, xPObjectSpaceProviderOptions.ThreadSafe, xPObjectSpaceProviderOptions.UseSeparateDataLayers);
                 })
                 .AddNonPersistent();
         });
@@ -57,10 +58,9 @@ public class Startup {
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
-        if(env.IsDevelopment()) {
+        if (env.IsDevelopment()) {
             app.UseDeveloperExceptionPage();
-        }
-        else {
+        } else {
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. To change this for production scenarios, see: https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
@@ -70,7 +70,6 @@ public class Startup {
         app.UseStaticFiles();
         app.UseRouting();
         app.UseXaf();
-        app.UseMiddleware<MyRegisterSequenceGeneratorMiddleware>();
         app.UseEndpoints(endpoints => {
             endpoints.MapXafEndpoints();
             endpoints.MapBlazorHub();
