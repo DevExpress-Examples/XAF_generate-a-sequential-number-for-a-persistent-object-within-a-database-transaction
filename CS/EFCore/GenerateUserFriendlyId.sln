@@ -3,12 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateUserFriendlyId.Blazor.Server", "GenerateUserFriendlyId.Blazor.Server\GenerateUserFriendlyId.Blazor.Server.csproj", "{17BD8B24-E0B2-4AB4-801A-D951781671B9}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateUserFriendlyId.Module", "GenerateUserFriendlyId.Module\GenerateUserFriendlyId.Module.csproj", "{9711F960-BABB-43C9-BD22-756C27E199D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateUserFriendlyId.Win", "GenerateUserFriendlyId.Win\GenerateUserFriendlyId.Win.csproj", "{F5B3111B-3F5E-4659-ACC1-84CA212CF010}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateUserFriendlyId.Blazor.Server", "GenerateUserFriendlyId.Blazor.Server\GenerateUserFriendlyId.Blazor.Server.csproj", "{17BD8B24-E0B2-4AB4-801A-D951781671B9}"
-EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
