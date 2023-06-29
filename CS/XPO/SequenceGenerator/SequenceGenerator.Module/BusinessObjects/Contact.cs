@@ -58,16 +58,7 @@ namespace dxTestSolution.Module.BusinessObjects {
                 SetPropertyValue(nameof(Age), ref _age, value);
             }
         }
-        // DateTime _birthDate;
-        // public DateTime BirthDate {
-        // get {
-        // return _birthDate;
-        // }
-        // set {
-        // SetPropertyValue(nameof(BirthDate), ref _birthDate, value);
-        // }
-        // }	
-        //office#3		
+	
         [Association("Contact-Tasks")]
         public XPCollection<MyTask> Tasks {
             get {
@@ -75,21 +66,6 @@ namespace dxTestSolution.Module.BusinessObjects {
             }
         }
 		
-		        // byte[] _text;
-        // [EditorAlias(EditorAliases.RichTextPropertyEditor)]
-        // public byte[] Text {
-            // get {
-                // return _text;
-            // }
-            // set {
-                // SetPropertyValue(nameof(Text), ref _text, value);
-            // }
-        // }
-		// private byte[] data;
-        // [EditorAlias(EditorAliases.SpreadsheetPropertyEditor)] 
-        // public byte[] Data { 
-			// get { return data; }
-			// set { SetPropertyValue(nameof(Data), ref data, value); }
-		// }
+
     }
 }
