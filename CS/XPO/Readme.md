@@ -72,41 +72,55 @@ Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
                 builder.ObjectSpaceProviders
                     .AddSecuredXpo((serviceProvider, options) => {
                         //...
-                        var dataStoreProviderManager = new DataStoreProviderManager();
-                        var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
+                        IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
                         GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                        options.UseCustomDataStoreProvider(dataStoreProvider);
+                })
 ```
 
 WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
-```cs{11-14}
+```cs{10-11}
    //...
     public class ApplicationBuilder : IDesignTimeApplicationFactory {
         public static WinApplication BuildApplication(string connectionString) {
             var builder = WinApplication.CreateBuilder();
             builder.UseApplication<SequenceGeneratorWindowsFormsApplication>();
-            builder.Modules
-                //...
+            //...
+            builder.ObjectSpaceProviders
                 .AddSecuredXpo((application, options) => {
                     options.ConnectionString = connectionString;
-                    var dataStoreProviderManager = new DataStoreProviderManager();
-                    var dataStoreProvider = options.GetDataStoreProvider(dataStoreProviderManager);
+                    IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
                     GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                    options.UseCustomDataStoreProvider(dataStoreProvider);
                 })
    
 ```    
 
 For apps with the Middle Tier Security:
-YourSolutionName\YourSolutionName.MiddleTierWebApi\MiddleTierSetup\WebApiApplicationSetup.cs
-```cs{5-7}
-public class WebApiApplicationSetup : IWebApiApplicationSetup {
-    public void SetupApplication(AspNetCoreApplication application) {
-        application.Modules.Add(new SequentalSecurityMiddle.Module.SequentalSecurityMiddleModule());
 
-        IOptions<DataServerSecurityOptions> options = application.ServiceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
-        IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(options.Value.ConnectionString, null);
-        GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+Create a custom service:
+
+```cs
+using DevExpress.ExpressApp.AspNetCore;
+using DevExpress.ExpressApp.AspNetCore.WebApi;
+using DevExpress.ExpressApp.Xpo;
+using Microsoft.Extensions.Options;
+
+namespace SeqXPOMiddle.MiddleTier {
+    public class WebApiApplicationSetup : IWebApiApplicationSetup {
+        public void SetupApplication(AspNetCoreApplication application) {
+            IOptions<DataServerSecurityOptions> options = application.ServiceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
+            IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(options.Value.ConnectionString, null);
+            GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+        }
+    }
+}
+```
+Register this service in your YourSolutionName.MiddleTier project (YourSolutionName.MiddleTier\Startup.cs):
+
+```cs
+public class Startup
+//...
+    public void ConfigureServices(IServiceCollection services) {
+        services.AddSingleton<IWebApiApplicationSetup, WebApiApplicationSetup>();
 ```
 
 3. Inherit your business classes to which you want to add sequential numbers from the module's `UserFriendlyIdPersistentObject` class. Declare a calculated property that uses the `SequenceNumber` property of the base class to produce a string identifier according to the required format:
