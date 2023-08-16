@@ -21,13 +21,11 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
             .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
             .Add<SequenceGeneratorWinModule>();
         builder.ObjectSpaceProviders
-            .Add((app, _) => {
-                XPObjectSpaceProviderOptions xPObjectSpaceProviderOptions = new XPObjectSpaceProviderOptions();
-                IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                xPObjectSpaceProviderOptions.ConnectionString = connectionString;
-                return new XPObjectSpaceProvider(dataStoreProvider, app.TypesInfo, null, xPObjectSpaceProviderOptions.ThreadSafe, xPObjectSpaceProviderOptions.UseSeparateDataLayers);
-            })
+             .AddXpo((application, options) => {
+                 options.ConnectionString = connectionString;
+                 IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+                 GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+             })
             .AddNonPersistent();
         builder.AddBuildStep(application => {
             application.ConnectionString = connectionString;
