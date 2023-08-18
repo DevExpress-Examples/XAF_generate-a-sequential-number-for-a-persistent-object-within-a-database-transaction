@@ -7,6 +7,8 @@ This example illustrates how to implement a business object with an identifier f
 
 ## Scenario
 
+
+
 This is a variation of the [How to generate and assign a sequential number for a business object within a database transaction, while being a part of a successful saving process](https://www.devexpress.com/Support/Center/p/E2620) XPO example, which was specially adapted for XAF applications.
 
 In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
@@ -14,153 +16,149 @@ In particular, for better reusability and smoother integration with the standard
 * [Sequence](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) are auxiliary classes that are primarily responsible for generating user-friendly identifiers. Take special note that the `SequenceGenerator.Initialize` method must be called during your XAF application startup for correct operation. We will describe how to do it further.
 * [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. To get the described functionality in your project, inherit your own business classes from this base class.
 
-
 Check the original example description first for more information on the demonstrated scenarios and functionality.
 
 ## Implementation Details
 
-1. Copy [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) files to your app.
+1. Copy the [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) files to your project.
 
-2. Initialize SequenceGenerator with the SequenceGenerator.Initialize method:
+2. Initialize `SequenceGenerator` with the `SequenceGenerator.Initialize` method.
 
+	For applications without the Security module:
 
-    For apps without security:
+	* ASP.NET Core Blazor (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
 
-Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
-```cs{10-11}
-    public class Startup {
-    //...
-        public void ConfigureServices(IServiceCollection services) {
-            //...
-            services.AddXaf(Configuration, builder => {
-                //...    
-                builder.ObjectSpaceProviders
-                    .AddXpo((serviceProvider, options) => {
-                        //...
-				        IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                        GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                })
-```
+		```cs{10-11}
+		    public class Startup {
+		    //...
+		        public void ConfigureServices(IServiceCollection services) {
+		            //...
+		            services.AddXaf(Configuration, builder => {
+		                //...    
+		                builder.ObjectSpaceProviders
+		                    .AddXpo((serviceProvider, options) => {
+		                        //...
+						        IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+		                        GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+		                })
+		```
 
-WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
-```cs{9-10}
-   //...
-    public class ApplicationBuilder : IDesignTimeApplicationFactory {
-        public static WinApplication BuildApplication(string connectionString) {
-            var builder = WinApplication.CreateBuilder();
-            builder.UseApplication<SequenceGeneratorWindowsFormsApplication>();
-            //...
-            builder.ObjectSpaceProviders
-                        .AddXpo((application, options) => {
-                            options.ConnectionString = connectionString;
-                            IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                            GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                        })
+	* WinForms (`YourSolutionName\YourSolutionName.Win\Startup.cs`) 
+	
+		```cs{9-10}
+		   //...
+		    public class ApplicationBuilder : IDesignTimeApplicationFactory {
+		        public static WinApplication BuildApplication(string connectionString) {
+		            var builder = WinApplication.CreateBuilder();
+		            builder.UseApplication<SequenceGeneratorWindowsFormsApplication>();
+		            //...
+		            builder.ObjectSpaceProviders
+		                        .AddXpo((application, options) => {
+		                            options.ConnectionString = connectionString;
+		                            IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+		                            GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+		                        })
+		   
+		```
    
-   ```
-   
-For app with Security:
+	For applications with the Security module:
 
+	* ASP.NET Core Blazor (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
 
-Blazor(YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs):
-```cs{10-13}
-    public class Startup {
-    //...
-        public void ConfigureServices(IServiceCollection services) {
-            //...
-            services.AddXaf(Configuration, builder => {
-                //...    
-                builder.ObjectSpaceProviders
-                    .AddSecuredXpo((serviceProvider, options) => {
-                        //...
-                        IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                        GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                })
-```
+		```cs{10-13}
+		    public class Startup {
+		    //...
+		        public void ConfigureServices(IServiceCollection services) {
+		            //...
+		            services.AddXaf(Configuration, builder => {
+		                //...    
+		                builder.ObjectSpaceProviders
+		                    .AddSecuredXpo((serviceProvider, options) => {
+		                        //...
+		                        IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+		                        GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+		                })
+		```
 
-WinForms (YourSolutionName\YourSolutionName.Win\Startup.cs) :  
-```cs{10-11}
-   //...
-    public class ApplicationBuilder : IDesignTimeApplicationFactory {
-        public static WinApplication BuildApplication(string connectionString) {
-            var builder = WinApplication.CreateBuilder();
-            builder.UseApplication<SequenceGeneratorWindowsFormsApplication>();
-            //...
-            builder.ObjectSpaceProviders
-                .AddSecuredXpo((application, options) => {
-                    options.ConnectionString = connectionString;
-                    IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                    GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                })
-   
-```    
+	* WinForms (`YourSolutionName\YourSolutionName.Win\Startup.cs`)
 
-For apps with the Middle Tier Security:
+		```cs{10-11}
+		//...
+		public class ApplicationBuilder : IDesignTimeApplicationFactory {
+			public static WinApplication BuildApplication(string connectionString) {
+				var builder = WinApplication.CreateBuilder();
+				builder.UseApplication<SequenceGeneratorWindowsFormsApplication>();
+				//...
+				builder.ObjectSpaceProviders
+					.AddSecuredXpo((application, options) => {
+						options.ConnectionString = connectionString;
+						IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+						GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+					})
+		```    
 
-Create a custom service:
+	For applications with the Middle Tier Security:
 
-```cs
-using DevExpress.ExpressApp.AspNetCore;
-using DevExpress.ExpressApp.AspNetCore.WebApi;
-using DevExpress.ExpressApp.Xpo;
-using Microsoft.Extensions.Options;
+	1. Create a custom service.
 
-namespace SeqXPOMiddle.MiddleTier {
-    public class WebApiApplicationSetup : IWebApiApplicationSetup {
-        public void SetupApplication(AspNetCoreApplication application) {
-            IOptions<DataServerSecurityOptions> options = application.ServiceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
-            IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(options.Value.ConnectionString, null);
-            GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-        }
-    }
-}
-```
-Register this service in your YourSolutionName.MiddleTier project (YourSolutionName.MiddleTier\Startup.cs):
+		```cs
+		using DevExpress.ExpressApp.AspNetCore;
+		using DevExpress.ExpressApp.AspNetCore.WebApi;
+		using DevExpress.ExpressApp.Xpo;
+		using Microsoft.Extensions.Options;
+		
+		namespace SeqXPOMiddle.MiddleTier {
+		    public class WebApiApplicationSetup : IWebApiApplicationSetup {
+		        public void SetupApplication(AspNetCoreApplication application) {
+		            IOptions<DataServerSecurityOptions> options = application.ServiceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
+		            IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(options.Value.ConnectionString, null);
+		            GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
+		        }
+		    }
+		}
+		```
+  
+  	2. Register this service in your `YourSolutionName.MiddleTier` project (`YourSolutionName.MiddleTier\Startup.cs`):
 
-```cs
-public class Startup
-//...
-    public void ConfigureServices(IServiceCollection services) {
-        services.AddSingleton<IWebApiApplicationSetup, WebApiApplicationSetup>();
-```
+		```cs
+		public class Startup
+		//...
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddSingleton<IWebApiApplicationSetup, WebApiApplicationSetup>();
+		```
 
 3. Inherit your business classes to which you want to add sequential numbers from the module's `UserFriendlyIdPersistentObject` class. Declare a calculated property that uses the `SequenceNumber` property of the base class to produce a string identifier according to the required format:
    
-```cs
-   public class Contact : GenerateUserFriendlyId.Module.BusinessObjects.UserFriendlyIdPersistentObject {
-       [PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")]
-       public string ContactId {
-           get { return Convert.ToString(EvaluateAlias("ContactId")); }
-       }
+	```cs
+	public class Contact : GenerateUserFriendlyId.Module.BusinessObjects.UserFriendlyIdPersistentObject {
+		[PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")]
+		public string ContactId {
+			get { return Convert.ToString(EvaluateAlias("ContactId")); }
+	}
+	   
+	```
    
-```
+4. Separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
    
-  
-   
-
-Separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
-   
-```cs
-   protected override string GetSequenceName() {
-       return string.Concat(ClassInfo.FullName, "-", Province.Replace(" ", "_"));
-   }
-```
+	```cs
+	protected override string GetSequenceName() {
+		return string.Concat(ClassInfo.FullName, "-", Province.Replace(" ", "_"));
+	}
+	```
    
 ## Additional Information
 
-1. As an alternative, you can implement much simpler solutions at the database level or by using the built-in `DistributedIdGeneratorHelper.Generate` method. Refer to the following article for more details: [An overview of approaches to implementing a user-friendly sequential number for use with an XPO business class](https://www.devexpress.com/Support/Center/p/T567184").
+1. As an alternative, you can implement much simpler solutions at the database level or by using the built-in `DistributedIdGeneratorHelper.Generate` method. Refer to the following article for more details: [An overview of approaches to implementing a user-friendly sequential number for use with an XPO business class](https://www.devexpress.com/Support/Center/p/T567184").
+2. In application with Security System, the newly generated sequence number will appear in the Detail View only after a manual refresh (in other words, it will be empty right after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the **Auto-Generate Unique Number Sequence** KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
+3. You can specify the initial sequence value manually: either by editing the **Sequence** table in the database or using the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) means by manipulating the `Sequence` objects, for example:
 
-2. In application with Security System, the newly generated sequence number will appear in the Detail View only after a manual refresh (in other words, it will be empty right after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the **Auto-Generate Unique Number Sequence** KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
-
-3. You can specify the initial sequence value manually: either by editing the **Sequence** table in the database or using the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) means by manipulating the `Sequence` objects, for example:
-
-```cs
-   using(IObjectSpace os = Application.CreateObjectSpace(typeof(Sequence))) {
-       Sequence sequence = os.FindObject<Sequence>(CriteriaOperator.Parse("TypeName=?", typeof(Contact).FullName));
-       sequence.NextSequence = 5;
-       os.CommitChanges();
-   }
-```
+	```cs
+	using(IObjectSpace os = Application.CreateObjectSpace(typeof(Sequence))) {
+		Sequence sequence = os.FindObject<Sequence>(CriteriaOperator.Parse("TypeName=?", typeof(Contact).FullName));
+		sequence.NextSequence = 5;
+		os.CommitChanges();
+	}
+	```
    
 ## Documentation
    
