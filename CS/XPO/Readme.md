@@ -8,7 +8,6 @@ This example illustrates how to implement a business object with an identifier f
 ## Scenario
 
 
-
 This is a variation of the [How to generate and assign a sequential number for a business object within a database transaction, while being a part of a successful saving process](https://www.devexpress.com/Support/Center/p/E2620) XPO example, which was specially adapted for XAF applications.
 
 In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
