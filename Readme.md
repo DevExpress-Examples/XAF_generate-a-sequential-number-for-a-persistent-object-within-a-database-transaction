@@ -55,7 +55,3 @@ As an alternative technique, you can use a database-specific _sequence_ object t
 ## Documentation
 
 * [Business Model Design with Entity Framework Core](https://docs.devexpress.com/eXpressAppFramework/401886/business-model-design-orm/business-model-design-with-entity-framework-core)
-
-## Examples
-
-* [XAF - How to Generate a Sequential User-friendly Identifier Field (XPO)](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-and-user-friendly-identifier-field-within-an-xpo-business-e4904)
