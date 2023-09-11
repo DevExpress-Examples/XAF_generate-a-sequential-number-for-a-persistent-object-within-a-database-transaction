@@ -163,6 +163,3 @@ Check the original example description first for more information on the demonst
    
 * [An overview of approaches to implementing a user-friendly sequential number for use with an XPO business class](https://www.devexpress.com/Support/Center/p/T567184)
 
-## Examples
-
-* [XAF XPO - How to Generate a Sequential User-friendly Identifier Field](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-and-user-friendly-identifier-field-within-an-xpo-business-e4904)
