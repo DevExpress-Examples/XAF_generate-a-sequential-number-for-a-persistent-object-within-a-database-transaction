@@ -12,7 +12,7 @@ This example illustrates how to implement a business object with an identifier f
 
 
 > **Note** 
-> This Readme focuses on Entity Framework Core. For information on how to achieve the same functionality with XPO, see the **Readme.md** file in the [XPO solution's folder](./CS/XPO).
+> This Readme focuses on Entity Framework Core. For information on how to achieve the same functionality with XPO, see the **Readme.md** file in the [XPO solution's folder](./CS/XPO/Readme.md).
 
 ## Implementation Details
 
