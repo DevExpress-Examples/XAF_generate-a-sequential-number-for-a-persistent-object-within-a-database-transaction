@@ -15,7 +15,7 @@ This Readme focuses on Entity Framework Core. For information on how to achieve 
 
 ## Implementation Details
 
-[Readme.md](CS/XPO/Readme.md)
+
 
 Entity Framework Core allows you to set up generation of sequential values for non-key data fields as described in the following article in the Entity Framework Core documentation: [Generated Values - Explicitly configuring value generation](https://learn.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations#explicitly-configuring-value-generation).
 
