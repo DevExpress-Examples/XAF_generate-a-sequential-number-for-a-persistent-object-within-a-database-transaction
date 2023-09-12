@@ -11,8 +11,7 @@ This example illustrates how to implement a business object with an identifier f
 ![image](https://github.com/AndreyKozhevnikov/XAF_generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction/assets/14300209/2883e55f-23ec-488e-ad7e-1410968160c0)
 
 
-> **Note** 
-> This Readme focuses on Entity Framework Core. For information on how to achieve the same functionality with XPO, see the [Readme.md](CS/XPO/Readme.md) file in the XPO solution's folder.
+This Readme focuses on Entity Framework Core. For information on how to achieve the same functionality with XPO, see the [Readme.md](CS/XPO/Readme.md) file in the XPO solution's folder.
 
 ## Implementation Details
 
