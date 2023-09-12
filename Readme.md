@@ -16,6 +16,8 @@ This example illustrates how to implement a business object with an identifier f
 
 ## Implementation Details
 
+[Readme.md](CS/XPO/Readme.md)
+
 Entity Framework Core allows you to set up generation of sequential values for non-key data fields as described in the following article in the Entity Framework Core documentation: [Generated Values - Explicitly configuring value generation](https://learn.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations#explicitly-configuring-value-generation).
 
 Use the steps below to generate sequential values for a business object's property so that the property is assigned a value once the object has been saved to the database:
