@@ -1,18 +1,15 @@
 using System;
 using DevExpress.Xpo;
 using System.ComponentModel;
-using System.Collections.Generic;
-using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
-using GenerateUserFriendlyId.Module;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GenerateUserFriendlyId.Module.BusinessObjects {
     //Dennis: Uncomment this code if you want to have the SequentialNumber column created in each derived class table.
     [NonPersistent]
     public abstract class UserFriendlyIdPersistentObject : BaseObject, ISupportSequentialNumber {
         private long _SequentialNumber;
-        private static SequenceGenerator sequenceGenerator;
-        private static object syncRoot = new object();
+        private SequenceGenerator sequenceGenerator;
         public UserFriendlyIdPersistentObject(Session session)
             : base(session) {
         }
@@ -47,36 +44,31 @@ namespace GenerateUserFriendlyId.Module.BusinessObjects {
             return SequenceGenerator.GetBaseSequenceName(ClassInfo);
         }
         public void GenerateSequence() {
-            lock(syncRoot) {
-                Dictionary<string, bool> typeToExistsMap = new Dictionary<string, bool>();
-                foreach(object item in Session.GetObjectsToSave()) {
-                    typeToExistsMap[Session.GetClassInfo(item).FullName] = true;
-                }
-                if(sequenceGenerator == null) {
-                    sequenceGenerator = new SequenceGenerator(typeToExistsMap);
-                }
-                SubscribeToEvents();
-                OnSequenceGenerated(sequenceGenerator.GetNextSequence(GetSequenceName()));
+            var typeToExistsMap = new HashSet<string>();
+            foreach (object item in Session.GetObjectsToSave()) {
+                typeToExistsMap.Add(Session.GetClassInfo(item).FullName);
             }
+            if (sequenceGenerator == null) {
+                sequenceGenerator = Session.ServiceProvider.GetRequiredService<SequenceGeneratorProvider>().GetSequenceGenerator();
+            }
+            sequenceGenerator.EnsureSequencesUnlocked(typeToExistsMap);
+            SubscribeToEvents();
+            OnSequenceGenerated(sequenceGenerator.GetNextSequence(GetSequenceName()));
         }
         private void AcceptSequence() {
-            lock(syncRoot) {
-                if(sequenceGenerator != null) {
-                    try {
-                        sequenceGenerator.Accept();
-                    } finally {
-                        CancelSequence();
-                    }
+            if (sequenceGenerator != null) {
+                try {
+                    sequenceGenerator.Accept();
+                }
+                finally {
+                    CancelSequence();
                 }
             }
         }
         private void CancelSequence() {
-            lock(syncRoot) {
-                UnSubscribeFromEvents();
-                if(sequenceGenerator != null) {
-                    sequenceGenerator.Close();
-                    sequenceGenerator = null;
-                }
+            UnSubscribeFromEvents();
+            if (sequenceGenerator != null) {
+                sequenceGenerator.Close();
             }
         }
         private void Session_AfterCommitTransaction(object sender, SessionManipulationEventArgs e) {

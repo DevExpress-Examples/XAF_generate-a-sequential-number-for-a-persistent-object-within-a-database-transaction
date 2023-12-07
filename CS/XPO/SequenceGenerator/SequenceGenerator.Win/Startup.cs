@@ -12,6 +12,7 @@ using GenerateUserFriendlyId.Module;
 namespace SequenceGenerator.Win;
 using DevExpress.ExpressApp.ApplicationBuilder.Internal;
 using DevExpress.ExpressApp.Xpo;
+using Microsoft.Extensions.DependencyInjection;
 
 public class ApplicationBuilder : IDesignTimeApplicationFactory {
     public static WinApplication BuildApplication(string connectionString) {
@@ -20,11 +21,17 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
         builder.Modules
             .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
             .Add<SequenceGeneratorWinModule>();
+
+        builder.Services.AddScoped<SequenceGeneratorProvider>();
+        builder.Services.Configure<SequenceGeneratorOptions>(opt => {
+            opt.GetConnectionString = (serviceProvider) => {
+                return connectionString;
+            };
+        });
+
         builder.ObjectSpaceProviders
              .AddXpo((application, options) => {
                  options.ConnectionString = connectionString;
-                 IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                 GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
              })
             .AddNonPersistent();
         builder.AddBuildStep(application => {

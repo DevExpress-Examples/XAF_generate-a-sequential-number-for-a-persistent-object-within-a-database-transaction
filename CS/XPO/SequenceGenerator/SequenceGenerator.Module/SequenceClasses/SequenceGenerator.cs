@@ -1,58 +1,112 @@
 using System;
 using DevExpress.Xpo;
-using System.Threading;
 using DevExpress.ExpressApp;
 using DevExpress.Xpo.Metadata;
 using DevExpress.ExpressApp.DC;
 using DevExpress.Data.Filtering;
-using System.Collections.Generic;
 using DevExpress.Xpo.DB.Exceptions;
 using DevExpress.ExpressApp.Utils;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Xpo.DB;
+using Microsoft.Extensions.Options;
 
 namespace GenerateUserFriendlyId.Module {
+
+    public class SequenceGeneratorOptions {
+        public Func<IServiceProvider, string> GetConnectionString;
+    }
+
+    public class SequenceGeneratorProvider {
+        readonly IOptions<SequenceGeneratorOptions> options;
+        readonly IServiceProvider serviceProvider;
+        static readonly Dictionary<string, SequenceGenerator> sequenceGenerators = new Dictionary<string, SequenceGenerator>();
+        static readonly object syncRoot = new object();
+        public SequenceGeneratorProvider(IServiceProvider serviceProvider, IOptions<SequenceGeneratorOptions> options) {
+            this.options = options;
+            this.serviceProvider = serviceProvider;
+        }
+        public SequenceGenerator GetSequenceGenerator() {
+            string connectionString = options.Value.GetConnectionString(serviceProvider);
+            lock (syncRoot) {
+                SequenceGenerator generator;
+                if (!sequenceGenerators.TryGetValue(connectionString, out generator)) {
+                    var dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
+                    var dataLayer = new SimpleDataLayer(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary, dataStoreProvider.CreateUpdatingStore(false, out _));
+                    generator = new SequenceGenerator(dataLayer);
+                    sequenceGenerators[connectionString] = generator;
+                }
+                return generator;
+            }
+        }
+    }
+
     //Dennis: This class is used to generate sequential numbers for persistent objects.
     //Use the GetNextSequence method to get the next number and the Accept method, to save these changes to the database.
     public class SequenceGenerator : IDisposable {
         public const int MaxGenerationAttemptsCount = 10;
         public const int MinGenerationAttemptsDelay = 100;
-        private static volatile IDataLayer defaultDataLayer;
         private static object syncRoot = new Object();
-        private ExplicitUnitOfWork euow;
-        private Sequence seq;
-        public SequenceGenerator(Dictionary<string, bool> lockedSequenceTypes) {
+        private ExplicitUnitOfWork explicitUnitOfWork;
+        private IDataLayer dataLayer;
+        public SequenceGenerator(IDataLayer dataLayer) {
+            this.dataLayer = dataLayer;
+        }
+
+        public void EnsureSequencesUnlocked(IEnumerable<string> lockedSequenceTypes) {
+            if (explicitUnitOfWork != null) {
+                return;
+            }
             int count = MaxGenerationAttemptsCount;
-            while(true) {
+            while (true) {
                 try {
-                    euow = new ExplicitUnitOfWork(DefaultDataLayer);
-                    //Dennis: It is necessary to update all sequences because objects graphs may be complex enough, and so their sequences should be locked to avoid a deadlock.
-                    XPCollection<Sequence> sequences = new XPCollection<Sequence>(euow, new InOperator("TypeName", lockedSequenceTypes.Keys), new SortProperty("TypeName", SortingDirection.Ascending));
-                    foreach(Sequence seq in sequences) {
-                        seq.Save();
+                    lock (syncRoot) {
+                        //Dennis: It is necessary to update all sequences because objects graphs may be complex enough, and so their sequences should be locked to avoid a deadlock.
+                        XPCollection<Sequence> sequences = new XPCollection<Sequence>(ExplicitUnitOfWork, new InOperator("TypeName", lockedSequenceTypes), new SortProperty("TypeName", SortingDirection.Ascending));
+                        foreach (Sequence seq in sequences) {
+                            seq.Save();
+                        }
+                        ExplicitUnitOfWork.FlushChanges();
                     }
-                    euow.FlushChanges();
                     break;
-                } catch(LockingException) {
+                }
+                catch (LockingException) {
                     Close();
                     count--;
-                    if(count <= 0) {
+                    if (count <= 0) {
                         throw;
                     }
                     Thread.Sleep(MinGenerationAttemptsDelay * count);
                 }
             }
         }
+
+        private ExplicitUnitOfWork ExplicitUnitOfWork {
+            get {
+                lock (syncRoot) {
+                    if (explicitUnitOfWork == null) {
+                        explicitUnitOfWork = new ExplicitUnitOfWork(dataLayer);
+                    }
+                    return explicitUnitOfWork;
+                }
+            }
+        }
+
         public void Accept() {
-            euow.CommitChanges();
+            lock (syncRoot) {
+                if (explicitUnitOfWork != null) {
+                    ExplicitUnitOfWork.CommitChanges();
+                }
+            }
         }
         public void Close() {
-            if(euow != null) {
-                if(euow.InTransaction) {
-                    euow.RollbackTransaction();
+            lock (syncRoot) {
+                if (explicitUnitOfWork != null) {
+                    if (explicitUnitOfWork.InTransaction) {
+                        explicitUnitOfWork.RollbackTransaction();
+                    }
+                    explicitUnitOfWork.Dispose();
+                    explicitUnitOfWork = null;
                 }
-                euow.Dispose();
-                euow = null;
             }
         }
         public void Dispose() {
@@ -70,15 +124,17 @@ namespace GenerateUserFriendlyId.Module {
             return GetNextSequence(GetBaseSequenceName(classInfo));
         }
         public long GetNextSequence(string name) {
-            seq = euow.GetObjectByKey<Sequence>(name, true);
-            if(seq == null) {
-                //throw new InvalidOperationException(string.Format("Sequence for the {0} type was not found.", name));
-                seq = CreateSequece(euow, name);
+            lock (syncRoot) {
+                var seq = ExplicitUnitOfWork.GetObjectByKey<Sequence>(name, true);
+                if (seq == null) {
+                    //throw new InvalidOperationException(string.Format("Sequence for the {0} type was not found.", name));
+                    seq = CreateSequence(ExplicitUnitOfWork, name);
+                }
+                long nextSequence = seq.NextSequence;
+                seq.NextSequence++;
+                ExplicitUnitOfWork.FlushChanges();
+                return nextSequence;
             }
-            long nextSequence = seq.NextSequence;
-            seq.NextSequence++;
-            euow.FlushChanges();
-            return nextSequence;
         }
         public static string GetBaseSequenceName(XPClassInfo classInfo) {
             Guard.ArgumentNotNull(classInfo, "classInfo");
@@ -89,16 +145,16 @@ namespace GenerateUserFriendlyId.Module {
             }
             return ci.FullName;
         }
-        private static Sequence CreateSequece(UnitOfWork uow, string typeName) {
+        private static Sequence CreateSequence(UnitOfWork uow, string typeName) {
             Sequence seq = new Sequence(uow);
             seq.TypeName = typeName;
             seq.NextSequence = 1;
             return seq;
         }
         //Dennis: It is necessary to generate (only once) sequences for all the persistent types before using the GetNextSequence method.
-        public static void RegisterSequences(IEnumerable<ITypeInfo> persistentTypes) {
+        public static void RegisterSequences(IDataLayer dataLayer, IEnumerable<ITypeInfo> persistentTypes) {
             if(persistentTypes != null)
-                using(UnitOfWork uow = new UnitOfWork(DefaultDataLayer)) {
+                using(UnitOfWork uow = new UnitOfWork(dataLayer)) {
                     XPCollection<Sequence> sequenceList = new XPCollection<Sequence>(uow);
                     Dictionary<string, bool> typeToExistsMap = new Dictionary<string, bool>();
                     foreach(Sequence seq in sequenceList) {
@@ -126,29 +182,12 @@ namespace GenerateUserFriendlyId.Module {
                         }
                         if(ti.IsPersistent) {
                             typeToExistsMap[typeName] = true;
-                            CreateSequece(uow, typeName);
+                            CreateSequence(uow, typeName);
                         }
                     }
                     uow.CommitChanges();
                 }
         }
-        //It may be necessary to use ValueManager if your application uses different databases for different users
-        public static IDataLayer DefaultDataLayer {
-            get {
-                lock (syncRoot) {
-                    if (defaultDataLayer == null) {
-                        IDisposable[] disposableObjects;
-                        defaultDataLayer = new SimpleDataLayer(XpoTypesInfoHelper.GetXpoTypeInfoSource().XPDictionary, DataStoreProvider.CreateUpdatingStore(false, out disposableObjects));
-                    }
-                    return defaultDataLayer;
-                }
-            }
-        }
-        public static void Initialize(IXpoDataStoreProvider dataStoreProvider) {
-            Guard.ArgumentNotNull(dataStoreProvider, "dataStoreProvider");
-            DataStoreProvider = dataStoreProvider;
-        }
-        protected static IXpoDataStoreProvider DataStoreProvider { get; private set; }
     }
     //This persistent class is used to store last sequential number for persistent objects.
     public class Sequence : XPBaseObject {
