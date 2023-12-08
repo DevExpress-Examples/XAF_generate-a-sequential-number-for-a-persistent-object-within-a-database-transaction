@@ -25,6 +25,7 @@ public class ApplicationBuilder : IDesignTimeApplicationFactory {
         builder.Services.AddScoped<SequenceGeneratorProvider>();
         builder.Services.Configure<SequenceGeneratorOptions>(opt => {
             opt.GetConnectionString = (serviceProvider) => {
+                //return serviceProvider.GetRequiredService<IConnectionStringProvider>().GetConnectionString();
                 return connectionString;
             };
         });
