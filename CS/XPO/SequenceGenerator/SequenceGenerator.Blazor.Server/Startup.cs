@@ -13,6 +13,7 @@ using dxTestSolution.Module.BusinessObjects;
 using Microsoft.AspNetCore.Http.Extensions;
 using DevExpress.ExpressApp.Xpo;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SequenceGenerator.Blazor.Server;
 
@@ -38,19 +39,21 @@ public class Startup {
             builder.Modules
                 .Add<SequenceGenerator.Module.SequenceGeneratorModule>()
                 .Add<SequenceGeneratorBlazorModule>();
+
+            builder.Services.AddScoped<SequenceGeneratorProvider>();
+            builder.Services.Configure<SequenceGeneratorOptions>(opt => {
+                opt.GetConnectionString = (serviceProvider) => {
+                    //return serviceProvider.GetRequiredService<IConnectionStringProvider>().GetConnectionString();
+                    return Configuration.GetConnectionString("ConnectionString");
+                };
+            });
+
             builder.ObjectSpaceProviders
-                .Add((_serviceProvider) => {
-                    XPObjectSpaceProviderOptions xPObjectSpaceProviderOptions = new XPObjectSpaceProviderOptions();
-                    string connectionString = null;
-                    if (Configuration.GetConnectionString("ConnectionString") != null) {
-                        connectionString = Configuration.GetConnectionString("ConnectionString");
-                    }
-                    IXpoDataStoreProvider dataStoreProvider = XPObjectSpaceProvider.GetDataStoreProvider(connectionString, null, true);
-                    GenerateUserFriendlyId.Module.SequenceGenerator.Initialize(dataStoreProvider);
-                    xPObjectSpaceProviderOptions.ConnectionString = connectionString;
-                    xPObjectSpaceProviderOptions.ThreadSafe = true;
-                    xPObjectSpaceProviderOptions.UseSharedDataStoreProvider = true;
-                    return new XPObjectSpaceProvider(dataStoreProvider, _serviceProvider.GetRequiredService<ITypesInfo>(), null, xPObjectSpaceProviderOptions.ThreadSafe, xPObjectSpaceProviderOptions.UseSeparateDataLayers);
+                .AddXpo((serviceProvider, options) => {
+                    string connectionString = Configuration.GetConnectionString("ConnectionString");
+                    options.ConnectionString = connectionString;
+                    options.ThreadSafe = true;
+                    options.UseSharedDataStoreProvider = true;
                 })
                 .AddNonPersistent();
         });
