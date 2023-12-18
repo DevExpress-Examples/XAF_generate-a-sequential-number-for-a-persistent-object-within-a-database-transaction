@@ -10,7 +10,7 @@ This example illustrates how to implement a business object with an identifier f
 
 This is a variation of the [How to generate and assign a sequential number for a business object within a database transaction, while being a part of a successful saving process](https://www.devexpress.com/Support/Center/p/E2620) XPO example, which was specially adapted for XAF applications.
 
-In particular, for better reusability and smoother integration with the standard XAF CRUD Controllers, all the required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
+In particular, for better reusability and smoother integration with standard XAF CRUD Controllers, all required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
 
 * [Sequence](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) are auxiliary classes that are primarily responsible for generating user-friendly identifiers. 
 * [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. To get the described functionality in your project, inherit your own business classes from this base class.
