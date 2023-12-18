@@ -132,8 +132,8 @@ Check the original example description first for more information on the demonst
    
 ## Additional Information
 
-1. As an alternative, you can implement much simpler solutions at the database level or by using the built-in `DistributedIdGeneratorHelper.Generate` method. Refer to the following article for more details: [An overview of approaches to implementing a user-friendly sequential number for use with an XPO business class](https://www.devexpress.com/Support/Center/p/T567184").
-2. In application with Security System, the newly generated sequence number will appear in the Detail View only after a manual refresh (in other words, it will be empty right after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the **Auto-Generate Unique Number Sequence** KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
+1. As an alternative, you can implement much simpler solutions at the database level or by using the built-in `DistributedIdGeneratorHelper.Generate` method. Refer to the following article for more details: [Auto-Generate Unique Number Sequence](https://www.devexpress.com/Support/Center/p/T567184").
+2. In application with the Security System, the newly generated sequence number will appear in the Detail View only after a manual refresh (in other words, it will be empty right after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the **Auto-Generate Unique Number Sequence** KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
 3. You can specify the initial sequence value manually. For this purpose, either edit the **Sequence** table in the database or use the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) techniques to manipulate the `Sequence` objects. For example, you can use the following code:
 
 	```cs
@@ -146,5 +146,5 @@ Check the original example description first for more information on the demonst
    
 ## Documentation
    
-* [An overview of approaches to implementing a user-friendly sequential number for use with an XPO business class](https://www.devexpress.com/Support/Center/p/T567184)
+* [Auto-Generate Unique Number Sequence](https://www.devexpress.com/Support/Center/p/T567184)
 
