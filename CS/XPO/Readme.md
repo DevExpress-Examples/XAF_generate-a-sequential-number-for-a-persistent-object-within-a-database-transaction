@@ -21,7 +21,7 @@ Check the original example description first for more information on the demonst
 
 1. Copy the [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) files to your project.
 
-2. Register `SequenceGeneratorProvider` scoped service, configure `SequenceGeneratorOptions` and specify the method that will be used to retrieve the Connection String to the database:
+2. Register the `SequenceGeneratorProvider` scoped service, configure `SequenceGeneratorOptions`, and specify the method that will be used to retrieve the Connection String from the database:
 
 	For applications without multi-tenancy:
 
