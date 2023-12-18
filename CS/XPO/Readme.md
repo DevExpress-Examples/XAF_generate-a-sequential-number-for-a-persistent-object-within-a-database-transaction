@@ -95,7 +95,7 @@ Check the original example description first for more information on the demonst
                 });
 		```
 
-	For applications with the Middle Tier Security:
+	For applications with Middle Tier Security:
 
 	* Middle Tier project (`YourSolutionName.MiddleTier\Startup.cs`):
 
