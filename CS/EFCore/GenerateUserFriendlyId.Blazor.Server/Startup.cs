@@ -50,6 +50,7 @@ public class Startup {
                     options.UseSqlServer(connectionString);
                     options.UseChangeTrackingProxies();
                     options.UseObjectSpaceLinkProxies();
+                    options.UseXafServiceProviderContainer(serviceProvider);
                     options.UseLazyLoadingProxies();
                 })
                 .AddNonPersistent();

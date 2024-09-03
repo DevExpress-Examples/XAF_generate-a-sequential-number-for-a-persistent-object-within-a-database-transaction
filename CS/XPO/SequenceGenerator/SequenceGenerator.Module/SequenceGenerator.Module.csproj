@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <Deterministic>false</Deterministic>
     <AssemblyVersion>1.0.*</AssemblyVersion>
@@ -15,11 +16,11 @@
     <EmbeddedResource Include="Model.DesignedDiffs.xafml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp" Version="23.2.2-beta" />
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="23.2.2-beta" />
-    <PackageReference Include="DevExpress.ExpressApp.Objects" Version="23.2.2-beta" />
-    <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="23.2.2-beta" />
-    <PackageReference Include="DevExpress.Persistent.Base" Version="23.2.2-beta" />
-    <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="23.2.2-beta" />
+    <PackageReference Include="DevExpress.ExpressApp" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.Objects" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.Persistent.Base" Version="24.2.1-alpha-24207" />
+    <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="24.2.1-alpha-24207" />
   </ItemGroup>
 </Project>
