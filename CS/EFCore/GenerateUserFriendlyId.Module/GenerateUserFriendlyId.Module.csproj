@@ -23,5 +23,8 @@
     <PackageReference Include="DevExpress.Persistent.BaseImpl.EFCore" Version="24.2.1-alpha-24207" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.*" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0"/>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0"/>
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.10.0"/>
   </ItemGroup>
 </Project>
