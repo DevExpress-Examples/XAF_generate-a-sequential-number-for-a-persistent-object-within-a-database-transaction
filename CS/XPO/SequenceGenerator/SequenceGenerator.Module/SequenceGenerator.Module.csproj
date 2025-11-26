@@ -18,7 +18,6 @@
   <ItemGroup>
     <PackageReference Include="DevExpress.ExpressApp" Version="25.2.1-alpha-25302" />
     <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.ExpressApp.Objects" Version="25.2.1-alpha-25302" />
     <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="25.2.1-alpha-25302" />
     <PackageReference Include="DevExpress.Persistent.Base" Version="25.2.1-alpha-25302" />
     <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="25.2.1-alpha-25302" />
