@@ -170,13 +170,6 @@ namespace GenerateUserFriendlyId.Module {
                             ti = ti.Base;
                         }
                         string typeName = ti.FullName;
-                        //Dennis: This code is required for the Domain Components only.
-                        if(ti.IsInterface && ti.IsPersistent) {
-                            Type generatedEntityType = XpoTypesInfoHelper.GetXpoTypeInfoSource().GetGeneratedEntityType(ti.Type);
-                            if(generatedEntityType != null) {
-                                typeName = generatedEntityType.FullName;
-                            }
-                        }
                         if(typeToExistsMap.ContainsKey(typeName)) {
                             continue;
                         }
