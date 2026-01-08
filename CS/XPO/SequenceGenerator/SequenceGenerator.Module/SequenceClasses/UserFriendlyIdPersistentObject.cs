@@ -45,8 +45,8 @@ namespace GenerateUserFriendlyId.Module.BusinessObjects {
         }
         public void GenerateSequence() {
             var typeToExistsMap = new HashSet<string>();
-            foreach (object item in Session.GetObjectsToSave()) {
-                typeToExistsMap.Add(Session.GetClassInfo(item).FullName);
+            foreach (var item in Session.GetObjectsToSave().OfType<UserFriendlyIdPersistentObject>()) {
+                typeToExistsMap.Add(item.GetSequenceName());
             }
             if (sequenceGenerator == null) {
                 sequenceGenerator = Session.ServiceProvider.GetRequiredService<SequenceGeneratorProvider>().GetSequenceGenerator();

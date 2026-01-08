@@ -49,6 +49,10 @@ namespace dxTestSolution.Module.BusinessObjects {
                 SetPropertyValue(nameof(LastName), ref _lastName, value);
             }
         }
+
+        protected override string GetSequenceName() {
+            return "testContactSequenceName";
+        }
 		int _age;
         public int Age {
             get {
