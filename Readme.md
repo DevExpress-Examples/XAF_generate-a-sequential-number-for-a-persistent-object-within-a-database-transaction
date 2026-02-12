@@ -109,7 +109,7 @@ Check the original example description first for more information on the demonst
 
 * [XAF XPO - How to Generate a Sequential User-friendly Identifier Field](https://github.com/DevExpress-Examples/XAF_how-to-generate-a-sequential-and-user-friendly-identifier-field-within-an-xpo-business-e4904)
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=XAF_generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=XAF_generate-a-sequential-number-for-a-persistent-object-within-a-database-transaction&~~~was_helpful=no)
 
