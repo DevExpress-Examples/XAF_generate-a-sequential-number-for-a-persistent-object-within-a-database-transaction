@@ -49,6 +49,21 @@ Follow the steps below to add this functionality to your project:
                 });
 		```
 
+	* **Applications with Middle Tier Security without multi-tenancy** (`YourSolutionName.MiddleTier\Startup.cs`):
+
+		```cs{4-10}
+		public class Startup
+		//...
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddScoped<SequenceGeneratorProvider>();
+            services.Configure<SequenceGeneratorOptions>(opt => {
+                opt.GetConnectionString = (serviceProvider) => {
+                    var options = serviceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
+                    return options.Value.ConnectionString;
+                };
+            });
+		```
+
 	* **ASP.NET Core Blazor multi-tenant applications** (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
 
 		```cs{7-12}
@@ -83,7 +98,7 @@ Follow the steps below to add this functionality to your project:
                 });
 		```
 
-	* **Applications with Middle Tier Security** (`YourSolutionName.MiddleTier\Startup.cs`):
+	* **Multi-tenant applications with Middle Tier Security** (`YourSolutionName.MiddleTier\Startup.cs`):
 
 		```cs{4-10}
 		public class Startup
