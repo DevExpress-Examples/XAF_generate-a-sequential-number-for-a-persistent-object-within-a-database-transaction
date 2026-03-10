@@ -4,27 +4,18 @@ This example illustrates how to implement a business object with an identifier f
 
 <img width="890" height="447" alt="sequential-number" src="https://github.com/user-attachments/assets/440955ce-ee90-43b2-b2ae-f63e25fac796" />
 
-
-## Scenario
-
-This is a variation of the [How to generate a sequential number for a business object within a database transaction](https://www.devexpress.com/Support/Center/p/E2620) XPO example, which was specially adapted for XAF applications.
-
-In particular, for better reusability and smoother integration with standard XAF CRUD Controllers, all required operations to generate sequences are managed within the base persistent class automatically when a persistent object is being saved. This solution consists of several key parts:
-
-* [Sequence](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) are auxiliary classes that are primarily responsible for generating user-friendly identifiers. 
-* [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. To get the described functionality in your project, inherit your own business classes from this base class.
-
-Check the original example description first for more information on the demonstrated scenarios and functionality.
-
 ## Implementation Details
 
-1. Copy the [SequenceGenerator](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) and [UserFriendlyIdPersistentObject](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) files to your project.
+Follow the steps below to add this functionality to your project:
+
+1. Copy the following files to your project:
+
+	* [SequenceGenerator.cs](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs) contains classes responsible for generating user-friendly identifiers.
+	* [UserFriendlyIdPersistentObject.cs](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs) is a base persistent class that subscribes to XPO's Session events and delegates calls to the core classes above. To get the described functionality in your project, inherit your own business classes from this base class.
 
 2. Register the `SequenceGeneratorProvider` scoped service, configure `SequenceGeneratorOptions`, and specify the method that will be used to retrieve the Connection String from the database:
 
-	For applications without multi-tenancy:
-
-	* ASP.NET Core Blazor (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
+	* **ASP.NET Core Blazor without multi-tenancy** (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
 
 		```cs{7-12}
 		    public class Startup {
@@ -41,7 +32,7 @@ Check the original example description first for more information on the demonst
                         });
 		```
 
-	* WinForms (`YourSolutionName\YourSolutionName.Win\Startup.cs`)
+	* **WinForms without multi-tenancy** (`YourSolutionName\YourSolutionName.Win\Startup.cs`)
 
 		```cs{7-12}
 		//...
@@ -57,10 +48,23 @@ Check the original example description first for more information on the demonst
                     };
                 });
 		```
-        
-	For multi-tenant applications:
 
-	* ASP.NET Core Blazor (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
+	* **Applications with Middle Tier Security without multi-tenancy** (`YourSolutionName.MiddleTier\Startup.cs`):
+
+		```cs{4-10}
+		public class Startup
+		//...
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddScoped<SequenceGeneratorProvider>();
+            services.Configure<SequenceGeneratorOptions>(opt => {
+                opt.GetConnectionString = (serviceProvider) => {
+                    var options = serviceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
+                    return options.Value.ConnectionString;
+                };
+            });
+		```
+
+	* **ASP.NET Core Blazor multi-tenant applications** (`YourSolutionName\YourSolutionName.Blazor.Server\Startup.cs`)
 
 		```cs{7-12}
 		    public class Startup {
@@ -77,7 +81,7 @@ Check the original example description first for more information on the demonst
                         });
 		```
 
-	* WinForms (`YourSolutionName\YourSolutionName.Win\Startup.cs`)
+	* **WinForms multi-tenant applications** (`YourSolutionName\YourSolutionName.Win\Startup.cs`)
 
 		```cs{7-12}
 		//...
@@ -94,9 +98,7 @@ Check the original example description first for more information on the demonst
                 });
 		```
 
-	For applications with Middle Tier Security:
-
-	* Middle Tier project (`YourSolutionName.MiddleTier\Startup.cs`):
+	* **Multi-tenant applications with Middle Tier Security** (`YourSolutionName.MiddleTier\Startup.cs`):
 
 		```cs{4-10}
 		public class Startup
@@ -105,14 +107,13 @@ Check the original example description first for more information on the demonst
 			services.AddScoped<SequenceGeneratorProvider>();
             services.Configure<SequenceGeneratorOptions>(opt => {
                 opt.GetConnectionString = (serviceProvider) => {
-                    var options = serviceProvider.GetRequiredService<IOptions<DataServerSecurityOptions>>();
-                    return options.Value.ConnectionString;
+                    return serviceProvider.GetRequiredService<IConnectionStringProvider>().GetConnectionString();
                 };
             });
 		```
 
-3. Inherit your business classes to which you want to add sequential numbers from the module's `UserFriendlyIdPersistentObject` class. Declare a calculated property that uses the `SequenceNumber` property of the base class to produce a string identifier according to the required format:
-   
+3. To add sequential numbers to your business class, inherit it from the `UserFriendlyIdPersistentObject` class. Declare a calculated property that utilizes the base class's `SequenceNumber` to generate a string identifier in the desired format.
+
 	```cs
 	public class Contact : GenerateUserFriendlyId.Module.BusinessObjects.UserFriendlyIdPersistentObject {
 		[PersistentAlias("Concat('C',PadLeft(ToStr(SequentialNumber),6,'0'))")]
@@ -122,8 +123,8 @@ Check the original example description first for more information on the demonst
 	   
 	```
    
-4. Separate sequences are generated for each business object type. If you need to create multiple sequences for the same type, based on values of other object properties, override the `GetSequenceName` method and return the constructed sequence name. The `Address` class in this example uses separate sequences for each `Province` as follows:
-   
+4. Separate sequences are created for each business object type. To generate multiple sequences for the same type based on other properties, override `GetSequenceName` to return a custom sequence name. In this example, the `Address` class uses different sequences for each `Province`.
+
 	```cs
 	protected override string GetSequenceName() {
 		return string.Concat(ClassInfo.FullName, "-", Province.Replace(" ", "_"));
@@ -132,8 +133,12 @@ Check the original example description first for more information on the demonst
    
 ## Additional Information
 
-1. In application with the Security System, the newly generated sequence number will appear in the Detail View only after a manual refresh (in other words, it will be empty right after saving a new record), because the sequence is generated on the server side only and is not passed to the client. See the following section of the **Auto-Generate Unique Number Sequence** KB article: [Refresh the Identifier field value in UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
-2. You can specify the initial sequence value manually. For this purpose, either edit the **Sequence** table in the database or use the [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) techniques to manipulate the `Sequence` objects. For example, you can use the following code:
+
+
+
+1. In applications with the Security System, a new sequence number appears in the Detail View only after a manual refresh because it is generated server-side and not immediately sent to the client. For more details, see the following help topic: [Refresh the Identifier Field Value in the UI](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation#refresh-the-identifier-field-value-in-the-ui).
+
+2. You can manually set the initial sequence value by editing the `Sequence` table in the database or using [standard XPO/XAF](https://docs.devexpress.com/eXpressAppFramework/113711/data-manipulation-and-business-logic/create-read-update-and-delete-data) methods to modify `Sequence` objects. For instance, you can use the following code:
 
 	```cs
 	using(IObjectSpace os = Application.CreateObjectSpace(typeof(Sequence))) {
@@ -142,8 +147,18 @@ Check the original example description first for more information on the demonst
 		os.CommitChanges();
 	}
 	```
-   
-## Documentation
-   
-* [Auto-Generate Unique Number Sequence](https://www.devexpress.com/Support/Center/p/T567184)
 
+## Files to Review
+
+* [SequenceGenerator.cs](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/SequenceGenerator.cs)
+* [UserFriendlyIdPersistentObject.cs](SequenceGenerator/SequenceGenerator.Module/SequenceClasses/UserFriendlyIdPersistentObject.cs)
+* [SequenceGenerator.Blazor.Server/Startup.cs](SequenceGenerator/SequenceGenerator.Blazor.Server/Startup.cs)
+* [SequenceGenerator.Win/Startup.cs](SequenceGenerator/SequenceGenerator.Win/Startup.cs)
+
+## Documentation
+
+* [Auto-Generate Unique Number Sequence](https://docs.devexpress.com/eXpressAppFramework/403605/business-model-design-orm/unique-auto-increment-number-generation)
+
+## More Examples
+
+* [How to generate a sequential number for a business object within a database transaction](https://supportcenter.devexpress.com/ticket/details/e2620/how-to-generate-a-sequential-number-for-a-business-object-within-a-database-transaction)
