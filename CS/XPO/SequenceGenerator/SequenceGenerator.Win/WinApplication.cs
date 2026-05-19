@@ -14,7 +14,6 @@ public class SequenceGeneratorWindowsFormsApplication : WinApplication {
 		SplashScreen = new DXSplashScreen(typeof(XafSplashScreen), new DefaultOverlayFormOptions());
         ApplicationName = "SequenceGenerator";
         CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
-        UseOldTemplates = false;
         DatabaseVersionMismatch += SequenceGeneratorWindowsFormsApplication_DatabaseVersionMismatch;
         CustomizeLanguagesList += SequenceGeneratorWindowsFormsApplication_CustomizeLanguagesList;
     }

@@ -18,7 +18,6 @@ public class GenerateUserFriendlyIdWindowsFormsApplication : WinApplication {
 		SplashScreen = new DXSplashScreen(typeof(XafSplashScreen), new DefaultOverlayFormOptions());
         ApplicationName = "GenerateUserFriendlyId";
         CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
-        UseOldTemplates = false;
         DatabaseVersionMismatch += GenerateUserFriendlyIdWindowsFormsApplication_DatabaseVersionMismatch;
         CustomizeLanguagesList += GenerateUserFriendlyIdWindowsFormsApplication_CustomizeLanguagesList;
     }
