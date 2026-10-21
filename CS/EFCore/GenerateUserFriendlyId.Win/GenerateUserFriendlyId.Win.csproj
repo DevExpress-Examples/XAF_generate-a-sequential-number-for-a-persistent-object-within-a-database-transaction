@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>ExpressApp.ico</ApplicationIcon>
@@ -28,14 +28,14 @@
     <EmbeddedResource Include="Images\Logo.svg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.ExpressApp.EFCore" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.ExpressApp.Win" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.Persistent.Base" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.Persistent.BaseImpl.EFCore" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.RichEdit.Export" Version="25.2.1-alpha-25302" />
-    <PackageReference Include="DevExpress.Win.Design" Version="25.2.1-alpha-25302" />
+    <PackageReference Include="DevExpress.ExpressApp" Version="26.1.5" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="26.1.5" />
+    <PackageReference Include="DevExpress.ExpressApp.EFCore" Version="26.1.5" />
+    <PackageReference Include="DevExpress.ExpressApp.Win" Version="26.1.5" />
+    <PackageReference Include="DevExpress.Persistent.Base" Version="26.1.5" />
+    <PackageReference Include="DevExpress.Persistent.BaseImpl.EFCore" Version="26.1.5" />
+    <PackageReference Include="DevExpress.RichEdit.Export" Version="26.1.5" />
+    <PackageReference Include="DevExpress.Win.Design" Version="26.1.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GenerateUserFriendlyId.Module\GenerateUserFriendlyId.Module.csproj" />
